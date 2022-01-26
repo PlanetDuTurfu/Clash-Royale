@@ -20,7 +20,7 @@ public class Coffres {
     {
         this.ctrl = ctrl;
         //                             Nom du coffre       NbOr  nbC nbR nbE nbL
-        coffreNaze       = new Coffre("Coffre naze"      ,  100,  20,  4,  0, 0);
+        coffreNaze       = new Coffre("Coffre naze"      ,  100,  20,  3,  0, 0);
         coffreEnBois     = new Coffre("Coffre en bois"   ,  150,  35,  6,  0, 0);
         coffreStylax     = new Coffre("Coffre stylax"    ,  320,  70, 15,  2, 0);
         coffreEz         = new Coffre("Coffre EZ"        ,  700, 120, 30,  3, 0);

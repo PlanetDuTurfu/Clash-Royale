@@ -15,7 +15,6 @@ public class ClashRoyale {
         alJoueurs.add(new Joueur("Yvan"));
         alJoueurs.add(new Joueur("Nono"));
         alJoueurs.add(new Joueur("Enzo"));
-        alJoueurs.add(new Joueur("Charlotte"));
 
         for (Joueur j : alJoueurs)
             this.attribuerCarte(j);

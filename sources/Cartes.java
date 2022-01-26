@@ -1,6 +1,8 @@
 package sources;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Cartes {
     private ArrayList<Carte> alCarteCommune = new ArrayList<Carte>();
@@ -10,27 +12,35 @@ public class Cartes {
 
     public Cartes()
     {
-        alCarteCommune.add(new Carte("Byvan", "Commune"));
-        alCarteCommune.add(new Carte("Gatéo", "Commune"));
-        alCarteCommune.add(new Carte("Roman", "Commune"));
-        alCarteCommune.add(new Carte("Benjos", "Commune"));
-        alCarteCommune.add(new Carte("Le chauve", "Commune"));
-        alCarteCommune.add(new Carte("Baise-vache", "Commune"));
-        alCarteCommune.add(new Carte("Ce gros chien d'Antoine", "Commune"));
-        alCarteRare.add(new Carte("Alan", "Rare"));
-        alCarteRare.add(new Carte("Paulo", "Rare"));
-        alCarteRare.add(new Carte("Duflowww", "Rare"));
-        alCarteRare.add(new Carte("Nzeko Kouam", "Rare"));
-        alCarteRare.add(new Carte("Steve Carlos", "Rare"));
-        alCarteRare.add(new Carte("Racaille de rue", "Rare"));
-        alCarteRare.add(new Carte("Liquide visqueux et suspect", "Rare"));
-        alCarteEpique.add(new Carte("Bobël", "Epique"));
-        alCarteEpique.add(new Carte("Benzo", "Epique"));
-        alCarteEpique.add(new Carte("Laulau", "Epique"));
-        alCarteEpique.add(new Carte("Violeur d'enfants", "Epique"));
-        alCarteLegendaire.add(new Carte("PLP", "Légendaire"));
-        alCarteLegendaire.add(new Carte("RodoBoss", "Légendaire"));
-        alCarteLegendaire.add(new Carte("Steph Maing", "Légendaire"));
+        this.creerCartes();
+    }
+
+    private void creerCartes()
+    {
+        String[] tab = new String[4];
+
+        tab[0] = "Commune";
+        tab[1] = "Rare";
+        tab[2] = "Epique";
+        tab[3] = "Légendaire";
+
+        for (String s : tab)
+        {
+            try {
+                Scanner sc = new Scanner(new FileInputStream("./data/Cartes"+s+".data"));
+                while (sc.hasNextLine())
+                {
+                    String ligne = sc.nextLine();
+                    switch (s)
+                    {
+                        case "Commune"    : alCarteCommune.add(new Carte(ligne.split("\t")[0], "\033[90m"+s+"\033[0m")); break;
+                        case "Rare"       : alCarteRare.add(new Carte(ligne.split("\t")[0], "\033[91m"+s+"\033[0m")); break;
+                        case "Epique"     : alCarteEpique.add(new Carte(ligne.split("\t")[0], "\033[95m"+s+"\033[0m")); break;
+                        case "Légendaire" : alCarteLegendaire.add(new Carte(ligne.split("\t")[0], "\033[36m"+s+"\033[0m")); break;
+                    }
+                }
+            } catch(Exception e) {}
+        }
     }
     public ArrayList<Carte> getCartesCommune    () { return alCarteCommune   ; }
     public ArrayList<Carte> getCartesRare       () { return alCarteRare      ; }
