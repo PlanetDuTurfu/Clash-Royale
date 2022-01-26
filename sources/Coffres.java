@@ -1,7 +1,5 @@
 package sources;
 
-import java.util.ArrayList;
-
 public class Coffres {
     private ClashRoyale ctrl;
     private Coffre coffreNaze;
@@ -20,13 +18,13 @@ public class Coffres {
     {
         this.ctrl = ctrl;
         //                             Nom du coffre       NbOr  nbC nbR nbE nbL
-        coffreNaze       = new Coffre("Coffre naze"      ,  80,  20,  3,  0, 0);
-        coffreEnBois     = new Coffre("Coffre en bois"   ,  125,  35,  6,  0, 0);
-        coffreStylax     = new Coffre("Coffre stylax"    ,  200,  70, 15,  2, 0);
-        coffreEz         = new Coffre("Coffre EZ"        ,  450, 120, 30,  3, 0);
-        coffreDuFutur    = new Coffre("Coffre du futur"  ,  800, 170, 20,  4, 0);
-        coffreOP         = new Coffre("Coffre OP"        , 1400, 210, 50,  7, 1);
-        rodoCoffre       = new Coffre("Rodocoffre"       , 1850, 300, 65, 10, 1);
+        coffreNaze       = new Coffre("Coffre naze"      ,   80,  20,  3,  0, 0);
+        coffreEnBois     = new Coffre("Coffre en bois"   ,  170,  35,  6,  0, 0);
+        coffreStylax     = new Coffre("Coffre stylax"    ,  300,  70, 15,  2, 0);
+        coffreEz         = new Coffre("Coffre EZ"        ,  600, 120, 30,  3, 0);
+        coffreDuFutur    = new Coffre("Coffre du futur"  , 1000, 170, 20,  4, 0);
+        coffreOP         = new Coffre("Coffre OP"        , 1600, 210, 50,  7, 1);
+        rodoCoffre       = new Coffre("Rodocoffre"       , 2200, 300, 65, 10, 1);
         coffreCommun     = new Coffre("Coffre commun"    , 1000, 600,  0,  0, 0);
         coffreRare       = new Coffre("Coffre rare"      , 1200,   0,100,  0, 0);
         coffreEpique     = new Coffre("Coffre épique"    , 1500,   0,  0, 20, 0);
@@ -142,15 +140,14 @@ public class Coffres {
 
     private Carte carteAuHasard(String rarete)
     {
-        ArrayList<Carte> alCartes = new ArrayList<Carte>();
         switch (rarete)
         {
-            case "Commune" : alCartes = ctrl.getCartesCommune(); break;
-            case "Rare" : alCartes = ctrl.getCartesRare(); break;
-            case "Epique" : alCartes = ctrl.getCartesEpique(); break;
-            case "Legendaire" : alCartes = ctrl.getCartesLegendaire(); break;
+            case "Commune"      : return ctrl.getCartesCommune   ().get((int)(Math.random()*ctrl.getCartesCommune   ().size()));
+            case "Rare"         : return ctrl.getCartesRare      ().get((int)(Math.random()*ctrl.getCartesRare      ().size()));
+            case "Epique"       : return ctrl.getCartesEpique    ().get((int)(Math.random()*ctrl.getCartesEpique    ().size()));
+            case "Legendaire"   : return ctrl.getCartesLegendaire().get((int)(Math.random()*ctrl.getCartesLegendaire().size()));
         }
         
-        return alCartes.get((int) (Math.random()*alCartes.size()));
+        return null;
     }
 }

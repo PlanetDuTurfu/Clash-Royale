@@ -18,7 +18,6 @@ public class Cartes {
     private void creerCartes()
     {
         String[] tab = new String[4];
-
         tab[0] = "Commune";
         tab[1] = "Rare";
         tab[2] = "Epique";
@@ -30,16 +29,15 @@ public class Cartes {
                 Scanner sc = new Scanner(new FileInputStream("./data/Cartes"+s+".data"));
                 while (sc.hasNextLine())
                 {
-                    String ligne = sc.nextLine();
-                    switch (s)
-                    {
-                        case "Commune"    : alCarteCommune.add(new Carte(ligne.split("\t")[0], "\033[90m"+s+"\033[0m")); break;
-                        case "Rare"       : alCarteRare.add(new Carte(ligne.split("\t")[0], "\033[91m"+s+"\033[0m")); break;
-                        case "Epique"     : alCarteEpique.add(new Carte(ligne.split("\t")[0], "\033[95m"+s+"\033[0m")); break;
-                        case "Légendaire" : alCarteLegendaire.add(new Carte(ligne.split("\t")[0], "\033[36m"+s+"\033[0m")); break;
-                    }
+                    String[] l = sc.nextLine().split("\t");
+                    if (s.equals("Commune"   )) alCarteCommune   .add(new Carte(l[0], "\033[90m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1));
+                    if (s.equals("Rare"      )) alCarteRare      .add(new Carte(l[0], "\033[91m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1));
+                    if (s.equals("Epique"    )) alCarteEpique    .add(new Carte(l[0], "\033[95m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1));
+                    if (s.equals("Légendaire")) alCarteLegendaire.add(new Carte(l[0], "\033[36m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1));
                 }
+                sc.close();
             } catch(Exception e) {}
+
         }
     }
     public ArrayList<Carte> getCartesCommune    () { return alCarteCommune   ; }

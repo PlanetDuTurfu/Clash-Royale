@@ -10,13 +10,13 @@ public class Joueur {
     {
         this.nom = nom;
         this.hmCartes = new HashMap<Carte, Integer>();
-        this.or = 0;
+        this.or = 1000;
     }
 
     public void ajouterCarte(Carte[] tabCartes)
     {
         for (Carte c : tabCartes)
-            if ( !this.isCarteDansLinv(c.getNom()) ) this.hmCartes.put(new Carte(c.getNom(), c.getRarete(), 1), 1);
+            if ( !this.isCarteDansLinv(c.getNom()) ) this.hmCartes.put(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1), 1);
             else
             {
                 Carte cTmp = this.getCarteParNom(c.getNom());
@@ -27,11 +27,11 @@ public class Joueur {
 
     private void ameliorer(Carte carte)
     {
-        if (this.hmCartes.get(carte) < (int)(Math.pow(2,carte.getNiveau())) || this.or <(int)(Math.pow(2,carte.getNiveau()))*15) return;
-        
+        if (this.hmCartes.get(carte) < (int)(Math.pow(2,carte.getNiveau())) || this.or < (int)(Math.pow(2,carte.getNiveau()))*15 || carte.getNiveau() == 10) return;
+
         this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15);
-        this.hmCartes.put(carte, this.hmCartes.get(carte)-(int)(Math.pow(2,carte.getNiveau())));
-        carte.setNiveau(carte.getNiveau()+1);
+        carte.ameliorer();
+        this.hmCartes.put(carte, this.hmCartes.get(carte) - (int)(Math.pow(2,carte.getNiveau()-1)));
     }
 
     private boolean isCarteDansLinv(String nom)
@@ -65,7 +65,7 @@ public class Joueur {
         sRet += "Joueur " + this.nom + " ("+this.or+" d'or) : \n";
 
         for (Carte c : this.hmCartes.keySet())
-            sRet += String.format("\t%3d %-27s (%-10s) niveau %2d\n",this.hmCartes.get(c), c.getNom(),c.getRarete(),c.getNiveau());
+            sRet += String.format("\t%3d %-27s (%-10s) niveau %1d\n",this.hmCartes.get(c), c.getNom(),c.getRarete(),c.getNiveau());
 
         return sRet;
     }

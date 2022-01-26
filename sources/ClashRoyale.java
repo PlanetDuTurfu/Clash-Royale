@@ -10,7 +10,7 @@ public class ClashRoyale {
     private ClashRoyale()
     {
         this.alJoueurs = new ArrayList<Joueur>();
-        cartes  = new Cartes ();
+        cartes  = new Cartes();
         coffres = new Coffres(this);
         alJoueurs.add(new Joueur("Yvan"));
 
