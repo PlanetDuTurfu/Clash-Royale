@@ -61,9 +61,9 @@ public class Coffres {
         {
             if (Math.random() * 1000 > 950)
             {
-                if (Math.random() * 1000 > 875)
+                if (Math.random() * 1000 > 900)
                 {
-                    if (Math.random() * 1000 > 900)
+                    if (Math.random() * 1000 > 910)
                     {
                         tmpCommune--;
                         tmpLegendaire++;

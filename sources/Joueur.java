@@ -61,12 +61,12 @@ public class Joueur {
     public String toString()
     {
         String sRet = "";
-
         sRet += "Joueur " + this.nom + " ("+this.or+" d'or) : \n";
-
         for (Carte c : this.hmCartes.keySet())
-            sRet += String.format("\t%3d %-27s (%-10s) niveau %1d\n",this.hmCartes.get(c), c.getNom(),c.getRarete(),c.getNiveau());
-
+        {
+            sRet += String.format("\t%5d %-27s %-10s",this.hmCartes.get(c), c.getNom(),c.getRarete());
+            sRet += String.format(" niveau %2d PV=%4d DEG=%4d Vit_Att=%4s\n",c.getNiveau(), c.getPV(), c.getDeg(), c.getVitAtt());
+        }
         return sRet;
     }
 }
