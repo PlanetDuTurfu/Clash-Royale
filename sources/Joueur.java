@@ -10,25 +10,28 @@ public class Joueur {
     {
         this.nom = nom;
         this.hmCartes = new HashMap<Carte, Integer>();
-        this.or = 1000;
+        this.or = 0;
     }
 
     public void ajouterCarte(Carte[] tabCartes)
     {
         for (Carte c : tabCartes)
-            if (!this.isCarteDansLinv(c.getNom())){
-                this.hmCartes.put(new Carte(c.getNom(), c.getRarete(), 1), 1); System.out.println("existe pas déjà"); }
+            if ( !this.isCarteDansLinv(c.getNom()) ) this.hmCartes.put(new Carte(c.getNom(), c.getRarete(), 1), 1);
             else
             {
-                System.out.println("existe déjà | 1)"+ c.getNom() + " " + this.hmCartes.get(this.getCarteParNom(c.getNom())));
-                this.hmCartes.put(this.getCarteParNom(c.getNom()),this.hmCartes.get(this.getCarteParNom(c.getNom())) + 1);
-                System.out.println("2)"+ c.getNom() + " " + this.hmCartes.get(this.getCarteParNom(c.getNom())));
-                if ( this.hmCartes.get(this.getCarteParNom(c.getNom())) == 2)
-                {
-                    this.hmCartes.put(c, this.hmCartes.get(c) - 2);
-                    c.setNiveau(c.getNiveau() + 1);
-                }
+                Carte cTmp = this.getCarteParNom(c.getNom());
+                this.hmCartes.put(cTmp, this.hmCartes.get(cTmp) + 1);
+                this.ameliorer(cTmp);
             }
+    }
+
+    private void ameliorer(Carte carte)
+    {
+        if (this.hmCartes.get(carte) < (int)(Math.pow(2,carte.getNiveau())) || this.or <(int)(Math.pow(2,carte.getNiveau()))*15) return;
+        
+        this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15);
+        this.hmCartes.put(carte, this.hmCartes.get(carte)-(int)(Math.pow(2,carte.getNiveau())));
+        carte.setNiveau(carte.getNiveau()+1);
     }
 
     private boolean isCarteDansLinv(String nom)
@@ -50,6 +53,11 @@ public class Joueur {
         this.or += or;
     }
 
+    private void enleverOr(int or)
+    {
+        this.or -= or;
+    }
+
     public String toString()
     {
         String sRet = "";
@@ -57,7 +65,7 @@ public class Joueur {
         sRet += "Joueur " + this.nom + " ("+this.or+" d'or) : \n";
 
         for (Carte c : this.hmCartes.keySet())
-            sRet += "\t" + this.hmCartes.get(c) + " " + c.getNom() + " (" + c.getRarete() + ") niveau "+c.getNiveau()+"\n";
+            sRet += String.format("\t%3d %-27s (%-10s) niveau %2d\n",this.hmCartes.get(c), c.getNom(),c.getRarete(),c.getNiveau());
 
         return sRet;
     }

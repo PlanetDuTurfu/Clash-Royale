@@ -20,13 +20,13 @@ public class Coffres {
     {
         this.ctrl = ctrl;
         //                             Nom du coffre       NbOr  nbC nbR nbE nbL
-        coffreNaze       = new Coffre("Coffre naze"      ,  100,  20,  3,  0, 0);
-        coffreEnBois     = new Coffre("Coffre en bois"   ,  150,  35,  6,  0, 0);
-        coffreStylax     = new Coffre("Coffre stylax"    ,  320,  70, 15,  2, 0);
-        coffreEz         = new Coffre("Coffre EZ"        ,  700, 120, 30,  3, 0);
-        coffreDuFutur    = new Coffre("Coffre du futur"  , 1100, 170, 20,  4, 0);
-        coffreOP         = new Coffre("Coffre OP"        , 2200, 210, 50,  7, 1);
-        rodoCoffre       = new Coffre("Rodocoffre"       , 3500, 300, 65, 10, 1);
+        coffreNaze       = new Coffre("Coffre naze"      ,  80,  20,  3,  0, 0);
+        coffreEnBois     = new Coffre("Coffre en bois"   ,  125,  35,  6,  0, 0);
+        coffreStylax     = new Coffre("Coffre stylax"    ,  200,  70, 15,  2, 0);
+        coffreEz         = new Coffre("Coffre EZ"        ,  450, 120, 30,  3, 0);
+        coffreDuFutur    = new Coffre("Coffre du futur"  ,  800, 170, 20,  4, 0);
+        coffreOP         = new Coffre("Coffre OP"        , 1400, 210, 50,  7, 1);
+        rodoCoffre       = new Coffre("Rodocoffre"       , 1850, 300, 65, 10, 1);
         coffreCommun     = new Coffre("Coffre commun"    , 1000, 600,  0,  0, 0);
         coffreRare       = new Coffre("Coffre rare"      , 1200,   0,100,  0, 0);
         coffreEpique     = new Coffre("Coffre épique"    , 1500,   0,  0, 20, 0);
@@ -61,20 +61,26 @@ public class Coffres {
     
         for (int i = 0; i < coffre.getCommune(); i++)
         {
-            if ( Math.random() * 100 > 99.85)
+            if (Math.random() * 1000 > 950)
             {
-                tmpCommune--;
-                tmpLegendaire++;
-            }
-            else if (Math.random() * 100 + 1 > 99.5)
-            {
-                tmpCommune--;
-                tmpEpique++;
-            }
-            else if (Math.random() * 100 + 1 > 97.5)
-            {
-                tmpCommune--;
-                tmpRare++;
+                if (Math.random() * 1000 > 875)
+                {
+                    if (Math.random() * 1000 > 900)
+                    {
+                        tmpCommune--;
+                        tmpLegendaire++;
+                    }
+                    else
+                    {
+                        tmpCommune--;
+                        tmpEpique++;
+                    }
+                }
+                else
+                {
+                    tmpCommune--;
+                    tmpRare++;
+                }
             }
         }
 

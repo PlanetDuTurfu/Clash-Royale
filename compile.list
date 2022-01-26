@@ -1,0 +1,8 @@
+-encoding utf-8
+
+./sources/Carte.java
+./sources/Cartes.java
+./sources/ClashRoyale.java
+./sources/Coffre.java
+./sources/Coffres.java
+./sources/Joueur.java

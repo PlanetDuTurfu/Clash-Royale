@@ -13,8 +13,6 @@ public class ClashRoyale {
         cartes  = new Cartes ();
         coffres = new Coffres(this);
         alJoueurs.add(new Joueur("Yvan"));
-        alJoueurs.add(new Joueur("Nono"));
-        alJoueurs.add(new Joueur("Enzo"));
 
         for (Joueur j : alJoueurs)
             this.attribuerCarte(j);
@@ -24,14 +22,14 @@ public class ClashRoyale {
 
     private void attribuerCarte(Joueur j)
     {
-        for (int i = 0; i < 3; i++)
-            this.ouvrirCoffre(coffres.getNaze(), j);
+        for (int i = 0; i < 1; i++)
+            this.ouvrirCoffre(coffres.getRodo(), j);
     }
 
     public void ouvrirCoffre(Coffre coffre, Joueur j)
     {
-        j.ajouterCarte(coffres.ouvrirCoffre(coffre));
         j.ajouterOr(coffre.getOr());
+        j.ajouterCarte(coffres.ouvrirCoffre(coffre));
     }
 
     public ArrayList<Carte> getCartesCommune   () { return cartes.getCartesCommune   (); }
