@@ -1,5 +1,7 @@
 package sources;
 
+import sources.Reseau.ClashRoyale;
+
 public class Coffres {
     private ClashRoyale ctrl;
     private Coffre coffreNaze;

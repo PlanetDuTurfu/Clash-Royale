@@ -2,7 +2,11 @@
 
 ./sources/Carte.java
 ./sources/Cartes.java
-./sources/ClashRoyale.java
 ./sources/Coffre.java
 ./sources/Coffres.java
-./sources/Joueur.java
+./sources/Reseau/ClashRoyale.java
+./sources/Reseau/Jeu.java
+./sources/Reseau/Joueur.java
+./sources/Reseau/Serveur.java
+./sources/Reseau/Troupe.java
+./sources/Reseau/Connexion.java
