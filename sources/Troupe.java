@@ -1,6 +1,4 @@
-package sources.Reseau;
-
-import sources.Carte;
+package sources;
 
 public class Troupe {
     public Troupe(Carte c)

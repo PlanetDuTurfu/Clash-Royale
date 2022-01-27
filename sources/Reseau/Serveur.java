@@ -3,6 +3,9 @@ package sources.Reseau;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+
+import sources.Jeu;
+
 import java.util.ArrayList;
 
 public class Serveur
@@ -41,7 +44,7 @@ public class Serveur
 						System.out.println("Client reçu");
 
 						// Informations du joueur
-						Joueur joueur = new Joueur(Serveur.this, socket);
+						Joueur joueur = new Joueur(Serveur.this, socket, Serveur.this.cr);
 						Serveur.this.ensJoueur.add(joueur);
 
 						//Thread
@@ -79,15 +82,35 @@ public class Serveur
 		}
 		else if (message.equals("co"))
 		{
-			cr.ouvrirCoffre(cr.getStylax(), joueur);
+			joueur.ouvrirCoffre();
 			joueur.getSortie().println("Un coffre a été ouvert !");
 		}
 		else if (message.substring(0,2).equals("ameliorer".substring(0,2)))
 		{
-			if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
-				joueur.getSortie().println("Carte améliorée");
+			try
+			{
+				if (joueur.ameliorer(Integer.parseInt(message.split("  ")[1])))
+					joueur.getSortie().println("Carte améliorée");
+			}
+			catch(Exception e)
+			{
+				if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
+					joueur.getSortie().println("Carte améliorée");
+			}
 		}
-		else joueur.getSortie().println("Petit aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie.");
+		else if (message.substring(0,2).equals("trier".substring(0,2)))
+		{
+			String[] tabTri = message.split(" ");
+			for (int i = tabTri.length-1; i > 0; i--)
+				if (tabTri[i].substring(0,2).equals("trier".substring(0,2))) break;
+				else if (tabTri[i].equals("Rarete")) joueur.trier(1);
+				else if (tabTri[i].equals("Niveau")) joueur.trier(2);
+				else if (tabTri[i].equals("Nom")) joueur.trier(3);
+			
+			joueur.getSortie().println("Inventaire trié !");
+		}
+		else joueur.getSortie().println("Petit aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
+										"\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;");
 	}
 
 	private void nouvellePartie()

@@ -11,21 +11,28 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 import sources.Carte;
+import sources.Coffre;
 
 public class Joueur implements Runnable, Serializable {
     private String nom;
     private ArrayList<Carte> alCartes = new ArrayList<Carte>();
+    private ArrayList<Coffre> alCoffre = new ArrayList<Coffre>();
     private int or;
+    private ClashRoyale cr;
 
     private BufferedReader entree;
 	private PrintWriter    sortie;
     private Serveur serveur;
 	private boolean interrompu;
     
-    public Joueur (Serveur serveur, Socket socket)
+    public Joueur (Serveur serveur, Socket socket, ClashRoyale cr)
     {
         this.or = 1000;
+        this.cr = cr;
         this.serveur = serveur;
+        this.alCoffre.add(this.cr.getStylax());
+        this.alCoffre.add(this.cr.getRodo());
+        this.alCoffre.add(this.cr.getNaze());
 
         try {this.entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));} catch (Exception e) {e.printStackTrace();}
         try
@@ -33,7 +40,8 @@ public class Joueur implements Runnable, Serializable {
             this.sortie = new PrintWriter(socket.getOutputStream(), true);
             this.sortie.println("Entrez votre pseudo : ");
             this.nom = this.entree.readLine();
-            this.sortie.println("Petit aide : \n - to : toString votre inventaire;\n - go : lancer une partie.");
+            this.sortie.println("Petit aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
+                                "\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;");
         } catch (Exception e) { e.printStackTrace(); }
 
 		this.interrompu = false;
@@ -54,7 +62,27 @@ public class Joueur implements Runnable, Serializable {
     {
         if (carte.getDoublons() < (int)(Math.pow(2,carte.getNiveau())) || this.or < (int)(Math.pow(2,carte.getNiveau()))*15 || carte.getNiveau() == 10) return false;
 
-        this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15);
+        int multiplicateur = 1;
+        if (carte.getRarete().equals("\033[91mRare\033[0m")) multiplicateur = 2;
+        if (carte.getRarete().equals("\033[95mEpique\033[0m")) multiplicateur = 3;
+        if (carte.getRarete().equals("\033[36mLégendaire\033[0m")) multiplicateur = 5;
+        this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15*multiplicateur);
+        carte.retirerDoublon((int)(Math.pow(2,carte.getNiveau())));
+        carte.ameliorer();
+        return true;
+    }
+
+    public boolean ameliorer(int indice)
+    {
+        if (indice > this.alCartes.size()) return false;
+        Carte carte = this.alCartes.get(indice);
+        if (carte.getDoublons() < (int)(Math.pow(2,carte.getNiveau())) || this.or < (int)(Math.pow(2,carte.getNiveau()))*15 || carte.getNiveau() == 10) return false;
+
+        int multiplicateur = 1;
+        if (carte.getRarete().equals("\033[91mRare\033[0m")) multiplicateur = 2;
+        if (carte.getRarete().equals("\033[95mEpique\033[0m")) multiplicateur = 3;
+        if (carte.getRarete().equals("\033[36mLégendaire\033[0m")) multiplicateur = 5;
+        this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15*multiplicateur);
         carte.retirerDoublon((int)(Math.pow(2,carte.getNiveau())));
         carte.ameliorer();
         return true;
@@ -84,6 +112,18 @@ public class Joueur implements Runnable, Serializable {
         return null;
     }
 
+    public void ajouterCoffre(Coffre coffre)
+    {
+        this.alCoffre.add(coffre);
+    }
+    public boolean ouvrirCoffre()
+    {
+        if (this.alCoffre.size() == 0) return false;
+        
+        this.cr.ouvrirCoffre(this.alCoffre.get(0), this);
+        this.alCoffre.remove(0);
+        return true;
+    }
     public void ajouterOr(int or)
     {
         this.or += or;
@@ -99,13 +139,22 @@ public class Joueur implements Runnable, Serializable {
 
     public String toString()
     {
-        this.trier(2);
         String sRet = "";
         sRet += "Joueur " + this.nom + " ("+this.or+" d'or) : \n";
         for (Carte c : this.alCartes)
         {
             sRet += String.format("\t%-19s %4d %-27s ", c.getRarete(), c.getDoublons(), c.getNom());
             sRet += String.format("niveau %2d PV=%4d DEG=%4d Vit_Att=%4s Prix=%1d\n",c.getNiveau(), c.getPV(), c.getDeg(), c.getVitAtt(), c.getPrix());
+        }
+
+        sRet += "Vos coffres : \n";
+        for (Coffre c : this.alCoffre)
+        {
+            sRet += "\t" + c.getNom() + " : " + (c.getCommune()+c.getRare()+c.getEpique()+c.getLegendaire())+ " cartes";
+            if (c.getRare() > 0) sRet += ", dont au moins " + c.getRare() + " rares";
+            if (c.getEpique() > 0) sRet += ", " + c.getEpique() + " épiques";
+            if (c.getLegendaire() > 0) sRet += ", " + c.getLegendaire() + " légendaires";
+            sRet += ";\n";
         }
         return sRet;
     }

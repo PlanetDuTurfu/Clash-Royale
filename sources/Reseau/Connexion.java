@@ -12,6 +12,7 @@ public class Connexion {
     private BufferedReader in;
     private PrintWriter out;
     private final Scanner sc = new Scanner(System.in);//pour lire à partir du clavier
+    private static String OS = System.getProperty("os.name").toLowerCase();
 
     public Connexion()
     {
@@ -44,7 +45,9 @@ public class Connexion {
                 {
                     while(true)
                     {
-                        out.println(sc.nextLine());
+                        String tmp = sc.nextLine();
+                        Connexion.clearConsole();
+                        out.println(tmp);
                         out.flush();
                     }
                 }
@@ -53,6 +56,25 @@ public class Connexion {
      
         } catch (Exception e) { e.printStackTrace(); }
     }
+
+    public static void clearConsole()
+    {
+		if (estWindows())
+		{
+			try { new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); }
+			catch (Exception e) {}
+		}
+		else
+		{
+			try { System.out.print("\033\143"); }
+			catch (Exception e) {}
+		}
+	}
+
+    private static boolean estWindows()
+	{
+		return (OS.indexOf("win") >= 0);	
+	}
 
     public static void main(String[] args) { new Connexion(); }
 }

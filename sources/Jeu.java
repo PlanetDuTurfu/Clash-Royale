@@ -1,4 +1,6 @@
-package sources.Reseau;
+package sources;
+
+import sources.Reseau.Joueur;
 
 public class Jeu
 {
