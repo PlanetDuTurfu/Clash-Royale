@@ -1,11 +1,9 @@
-package sources.Reseau;
+package sources;
 
 import java.util.ArrayList;
 
-import sources.Carte;
-import sources.Cartes;
-import sources.Coffre;
-import sources.Coffres;
+import sources.Reseau.Joueur;
+import sources.Reseau.Serveur;
 
 public class ClashRoyale {
     private Coffres coffres;

@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 import sources.Carte;
+import sources.ClashRoyale;
 import sources.Coffre;
 
 public class Joueur implements Runnable, Serializable {
