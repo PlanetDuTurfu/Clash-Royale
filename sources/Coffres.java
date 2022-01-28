@@ -1,47 +1,34 @@
 package sources;
 
+import java.util.ArrayList;
+
 public class Coffres {
     private ClashRoyale ctrl;
-    private Coffre coffreNaze;
-    private Coffre coffreEz;
-    private Coffre coffreStylax;
-    private Coffre coffreEnBois;
-    private Coffre coffreOP;
-    private Coffre coffreDuFutur;
-    private Coffre rodoCoffre;
-    private Coffre coffreCommun;
-    private Coffre coffreRare;
-    private Coffre coffreEpique;
-    private Coffre coffreLegendaire;
+    private ArrayList<Coffre> alCoffres = new ArrayList<Coffre>();
 
     public Coffres(ClashRoyale ctrl)
     {
         this.ctrl = ctrl;
-        //                             Nom du coffre       NbOr  nbC nbR nbE nbL
-        coffreNaze       = new Coffre("Coffre naze"      ,   80,  20,  3,  0, 0);
-        coffreEnBois     = new Coffre("Coffre en bois"   ,  170,  35,  6,  0, 0);
-        coffreStylax     = new Coffre("Coffre stylax"    ,  300,  70, 15,  2, 0);
-        coffreEz         = new Coffre("Coffre EZ"        ,  600, 120, 30,  3, 0);
-        coffreDuFutur    = new Coffre("Coffre du futur"  , 1000, 170, 20,  4, 0);
-        coffreOP         = new Coffre("Coffre OP"        , 1600, 210, 50,  7, 1);
-        rodoCoffre       = new Coffre("Rodocoffre"       , 2200, 300, 65, 10, 1);
-        coffreCommun     = new Coffre("Coffre commun"    , 1000, 600,  0,  0, 0);
-        coffreRare       = new Coffre("Coffre rare"      , 1200,   0,100,  0, 0);
-        coffreEpique     = new Coffre("Coffre épique"    , 1500,   0,  0, 20, 0);
-        coffreLegendaire = new Coffre("Coffre légendaire", 2000,   0,  0,  0, 2);
+        //                        Nom du coffre       NbOr  nbC nbR nbE nbL
+        alCoffres.add(new Coffre("Coffre naze"      ,   80,  20,  3,  0, 0));
+        alCoffres.add(new Coffre("Coffre en bois"   ,  170,  35,  6,  0, 0));
+        alCoffres.add(new Coffre("Coffre stylax"    ,  300,  70, 15,  2, 0));
+        alCoffres.add(new Coffre("Coffre EZ"        ,  600, 120, 30,  3, 0));
+        alCoffres.add(new Coffre("Coffre du futur"  , 1000, 170, 20,  4, 0));
+        alCoffres.add(new Coffre("Coffre OP"        , 1600, 210, 50,  7, 1));
+        alCoffres.add(new Coffre("Rodocoffre"       , 2200, 300, 65, 10, 1));
+        alCoffres.add(new Coffre("Coffre commun"    , 1000, 600,  0,  0, 0));
+        alCoffres.add(new Coffre("Coffre rare"      , 1200,   0,100,  0, 0));
+        alCoffres.add(new Coffre("Coffre épique"    , 1500,   0,  0, 20, 0));
+        alCoffres.add(new Coffre("Coffre légendaire", 2000,   0,  0,  0, 2));
     }
 
-    public Coffre getNaze      () { return coffreNaze      ; }
-    public Coffre getEnBois    () { return coffreEnBois    ; }
-    public Coffre getStylax    () { return coffreStylax    ; }
-    public Coffre getEz        () { return coffreEz        ; }
-    public Coffre getDuFutur   () { return coffreDuFutur   ; }
-    public Coffre getOP        () { return coffreOP        ; }
-    public Coffre getRodo      () { return rodoCoffre      ; }
-    public Coffre getCommun    () { return coffreCommun    ; }
-    public Coffre getRare      () { return coffreRare      ; }
-    public Coffre getEpique    () { return coffreEpique    ; }
-    public Coffre getLegendaire() { return coffreLegendaire; }
+    public Coffre getCoffreParNom(String nom)
+    {
+        for (Coffre c : alCoffres)
+            if (c.getNom().contains(nom)) return c;
+        return null;
+    }
 
     public Carte[] ouvrirCoffre(Coffre coffre)
     {

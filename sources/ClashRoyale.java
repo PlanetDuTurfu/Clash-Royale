@@ -26,18 +26,8 @@ public class ClashRoyale {
     public ArrayList<Carte> getCartesRare      () { return cartes.getCartesRare      (); }
     public ArrayList<Carte> getCartesEpique    () { return cartes.getCartesEpique    (); }
     public ArrayList<Carte> getCartesLegendaire() { return cartes.getCartesLegendaire(); }
-
-    public Coffre getNaze      () { return this.coffres.getNaze      (); }
-    public Coffre getEnBois    () { return this.coffres.getEnBois    (); }
-    public Coffre getStylax    () { return this.coffres.getStylax    (); }
-    public Coffre getEz        () { return this.coffres.getEz        (); }
-    public Coffre getDuFutur   () { return this.coffres.getDuFutur   (); }
-    public Coffre getOP        () { return this.coffres.getOP        (); }
-    public Coffre getRodo      () { return this.coffres.getRodo      (); }
-    public Coffre getCommun    () { return this.coffres.getCommun    (); }
-    public Coffre getRare      () { return this.coffres.getRare      (); }
-    public Coffre getEpique    () { return this.coffres.getEpique    (); }
-    public Coffre getLegendaire() { return this.coffres.getLegendaire(); }
+    public Carte       getCarteParNom(String nom) { return cartes.getCarteParNom  (nom); }
+    public Coffre     getCoffreParNom(String nom) { return coffres.getCoffreParNom(nom); }
 
     public static void main(String[] args) {
         new ClashRoyale();

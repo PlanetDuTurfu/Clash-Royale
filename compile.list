@@ -4,9 +4,9 @@
 ./sources/Cartes.java
 ./sources/Coffre.java
 ./sources/Coffres.java
-./sources/Reseau/ClashRoyale.java
-./sources/Reseau/Jeu.java
+./sources/ClashRoyale.java
+./sources/Jeu.java
 ./sources/Reseau/Joueur.java
 ./sources/Reseau/Serveur.java
-./sources/Reseau/Troupe.java
+./sources/Troupe.java
 ./sources/Reseau/Connexion.java

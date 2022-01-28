@@ -3,49 +3,41 @@ package sources.Reseau;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import java.net.Socket;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Serializable;
-
 import sources.Carte;
 import sources.ClashRoyale;
 import sources.Coffre;
 
+import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
+
 public class Joueur implements Runnable, Serializable {
     private String nom;
+    private String mdp;
+    private int or;
     private ArrayList<Carte> alCartes = new ArrayList<Carte>();
     private ArrayList<Coffre> alCoffre = new ArrayList<Coffre>();
-    private int or;
     private ClashRoyale cr;
 
     private BufferedReader entree;
-	private PrintWriter    sortie;
+	private PrintWriter sortie;
     private Serveur serveur;
-	private boolean interrompu;
+    private Thread thread;
     
-    public Joueur (Serveur serveur, Socket socket, ClashRoyale cr)
+    public Joueur (Serveur serveur, Socket socket, ClashRoyale cr, Thread thread, String mdp, BufferedReader entree, PrintWriter sortie)
     {
         this.or = 1000;
         this.cr = cr;
         this.serveur = serveur;
-        this.alCoffre.add(this.cr.getStylax());
-        this.alCoffre.add(this.cr.getRodo());
-        this.alCoffre.add(this.cr.getNaze());
-
-        try {this.entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));} catch (Exception e) {e.printStackTrace();}
-        try
-        {
-            this.sortie = new PrintWriter(socket.getOutputStream(), true);
-            this.sortie.println("Entrez votre pseudo : ");
-            this.nom = this.entree.readLine();
-            this.sortie.println("Petit aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
-                                "\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;");
-        } catch (Exception e) { e.printStackTrace(); }
-
-		this.interrompu = false;
+        this.thread = thread;
+        this.mdp = mdp;
+        this.entree = entree;
+        this.sortie = sortie;
+        this.alCoffre.add(this.cr.getCoffreParNom("naze"));
+        try { this.sortie.println("Petite aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
+                                "\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;"); } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void ajouterCarte(Carte[] tabCartes)
@@ -57,6 +49,10 @@ public class Joueur implements Runnable, Serializable {
                 Carte cTmp = this.getCarteParNom(c.getNom());
                 cTmp.addDoublon();
             }
+    }
+    public void ajouterCarte(Carte carte)
+    {
+        this.alCartes.add(carte);
     }
 
     public boolean ameliorer(Carte carte)
@@ -137,6 +133,12 @@ public class Joueur implements Runnable, Serializable {
 
     public BufferedReader getEntree(){ return this.entree; }
 	public PrintWriter    getSortie(){ return this.sortie; }
+    public void    setNom(String nom){ this.nom = nom    ; }
+    public String            getNom(){ return this.nom   ; }
+    public String            getMdp(){ return this.mdp   ; }
+    public int                getOr(){ return this.or    ; }
+    public ArrayList<Carte>  getCartes () { return this.alCartes; }
+    public ArrayList<Coffre> getCoffres() { return this.alCoffre; }
 
     public String toString()
     {
@@ -162,7 +164,7 @@ public class Joueur implements Runnable, Serializable {
 
     public void run()
 	{
-		while(!this.interrompu)
+		while(true)
 		{
 			try
 			{
@@ -171,7 +173,14 @@ public class Joueur implements Runnable, Serializable {
 		        System.out.println(this.nom + " : " + msg);
 				this.serveur.lire(msg, this);
 			}
-			catch(Exception e){ e.printStackTrace(); }
+			catch(Exception e)
+            {
+                System.out.println(this.nom + " a quitté le jeu.");
+                this.serveur.deconnecter(this.thread);
+                try {this.entree.close();} catch (IOException e1) {}
+                this.sortie.close();
+                break;
+            }
 		}
 	}
 }

@@ -44,4 +44,17 @@ public class Cartes {
     public ArrayList<Carte> getCartesRare       () { return alCarteRare      ; }
     public ArrayList<Carte> getCartesEpique     () { return alCarteEpique    ; }
     public ArrayList<Carte> getCartesLegendaire () { return alCarteLegendaire; }
+
+    public Carte getCarteParNom(String nom)
+    {
+        for (Carte c : this.alCarteCommune)
+            if (nom.equals(c.getNom())) return c;
+        for (Carte c : this.alCarteRare)
+            if (nom.equals(c.getNom())) return c;
+        for (Carte c : this.alCarteEpique)
+            if (nom.equals(c.getNom())) return c;
+        for (Carte c : this.alCarteLegendaire)
+            if (nom.equals(c.getNom())) return c;
+        return null;
+    }
 }
