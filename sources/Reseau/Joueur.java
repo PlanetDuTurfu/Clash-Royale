@@ -50,9 +50,9 @@ public class Joueur implements Runnable, Serializable {
                 cTmp.addDoublon();
             }
     }
-    public void ajouterCarte(Carte carte)
+    public void setCartes(ArrayList<Carte> cartes)
     {
-        this.alCartes.add(carte);
+        this.alCartes = cartes;
     }
 
     public boolean ameliorer(Carte carte)
@@ -176,7 +176,7 @@ public class Joueur implements Runnable, Serializable {
 			catch(Exception e)
             {
                 System.out.println(this.nom + " a quitté le jeu.");
-                this.serveur.deconnecter(this.thread);
+                this.serveur.deconnecter(this.thread, this);
                 try {this.entree.close();} catch (IOException e1) {}
                 this.sortie.close();
                 break;

@@ -55,7 +55,9 @@ public class Serveur
 						// Informations du joueur
 						sortie.println("Entrez votre pseudo : ");
 						Joueur joueur = Serveur.this.chargerJoueur(entree.readLine(), socket, cr, this, entree, sortie);
-						Serveur.this.ensJoueur.add(joueur);
+						boolean t = false;
+						for (Joueur k : Serveur.this.ensJoueur) if (k.getNom().equals(joueur.getNom())) t = true;
+						if (!t) Serveur.this.ensJoueur.add(joueur);
 
 						//Thread
 						Thread tj = new Thread(joueur);
@@ -137,7 +139,7 @@ public class Serveur
 		this.jeux.add( new Jeu(j1,j2) );
 	}
 
-	public void deconnecter(Thread tj)
+	public void deconnecter(Thread tj, Joueur j)
 	{
 		tj.interrupt();
 	}
@@ -156,9 +158,11 @@ public class Serveur
 				sortie.println("Entrez le mot de passe : ");
 				if (entree.readLine().equals(mdp))
 				{
+					for (Joueur k : this.ensJoueur) if (k.getNom().equals(pseudo)) return k;
 					j = new Joueur(this, socket, cr, t, mdp, entree, sortie);
 					j.setNom(pseudo);
 					j.ajouterOr(Integer.parseInt(sc.nextLine()) - 1000);
+					ArrayList<Carte> cartes = new ArrayList<Carte>();
 
 					while (sc.hasNextLine())
 					{
@@ -166,12 +170,22 @@ public class Serveur
 						if (ligne[0].charAt(0) == 'A')
 						{
 							Carte tmp2 = cr.getCarteParNom(ligne[1]);
-							for (int i = 0; i < Integer.parseInt(ligne[2]) / 2; i++) tmp2.addDoublon();
-							for (int i = 0; i < Integer.parseInt(ligne[3]) / 2; i++) tmp2.ameliorer ();
-							j.ajouterCarte(tmp2);
+							for (int i = 0; i < Integer.parseInt(ligne[2]); i++)
+							{
+								System.out.println("ici : " + i + " " + ligne[2]);
+								tmp2.addDoublon();
+							}
+							for (int i = 0; i < Integer.parseInt(ligne[3]) - 1; i++)
+							{
+								System.out.println("là : " + i + " " + ligne[3]);
+								tmp2.ameliorer ();
+							}
+							cartes.add(tmp2);
 						}						
 						if (ligne[0].charAt(0) == 'O') j.ajouterCoffre(cr.getCoffreParNom(ligne[1]));
 					}
+
+					j.setCartes(cartes);
 					return j;
 				}
 				else
