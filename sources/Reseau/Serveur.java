@@ -23,7 +23,6 @@ public class Serveur
 {
 	// Attributs du serveur
 	private ServerSocket serveur;
-	private List<Joueur> ensJoueur;
 
 	// Attributs du jeu
 	private List<Jeu> jeux;
@@ -31,10 +30,6 @@ public class Serveur
 
 	public Serveur(ClashRoyale cr)
 	{
-
-		// Création des joueurs
-		this.ensJoueur = new ArrayList<Joueur>();
-
 		// Initialisation des attributs du jeu
 		this.joueurEnRecherche = new ArrayList<Joueur>();
 		this.jeux = new ArrayList<Jeu>();
@@ -55,9 +50,7 @@ public class Serveur
 						// Informations du joueur
 						sortie.println("Entrez votre pseudo : ");
 						Joueur joueur = Serveur.this.chargerJoueur(entree.readLine(), socket, cr, this, entree, sortie);
-						boolean t = false;
-						for (Joueur k : Serveur.this.ensJoueur) if (k.getNom().equals(joueur.getNom())) t = true;
-						if (!t) Serveur.this.ensJoueur.add(joueur);
+						Serveur.this.sauverJoueur(joueur);
 
 						//Thread
 						Thread tj = new Thread(joueur);
@@ -73,6 +66,7 @@ public class Serveur
 
 	public void lire(String message, Joueur joueur)
 	{
+		if (message.length() < 2) return;
 		// Si la partie est lancée et que le jeu n'est pas terminé
 		// if (this.partieLancee && !this.jeu.getVictoire())
 		if (message.equals("to"))
@@ -101,7 +95,9 @@ public class Serveur
 		{
 			try
 			{
-				if (joueur.ameliorer(Integer.parseInt(message.split("  ")[1])))
+				if (joueur.getCartes().size() <= Integer.parseInt(message.split("  ")[1]))
+					joueur.getSortie().println("Cet indice est supérieur au nombre de cartes");
+				else if (joueur.ameliorer(Integer.parseInt(message.split("  ")[1])))
 					joueur.getSortie().println("Carte améliorée");
 				else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
 			}
@@ -158,7 +154,6 @@ public class Serveur
 				sortie.println("Entrez le mot de passe : ");
 				if (entree.readLine().equals(mdp))
 				{
-					for (Joueur k : this.ensJoueur) if (k.getNom().equals(pseudo)) return k;
 					j = new Joueur(this, socket, cr, t, mdp, entree, sortie);
 					j.setNom(pseudo);
 					j.ajouterOr(Integer.parseInt(sc.nextLine()) - 1000);
@@ -170,16 +165,10 @@ public class Serveur
 						if (ligne[0].charAt(0) == 'A')
 						{
 							Carte tmp2 = cr.getCarteParNom(ligne[1]);
-							for (int i = 0; i < Integer.parseInt(ligne[2]); i++)
-							{
-								System.out.println("ici : " + i + " " + ligne[2]);
-								tmp2.addDoublon();
-							}
-							for (int i = 0; i < Integer.parseInt(ligne[3]) - 1; i++)
-							{
-								System.out.println("là : " + i + " " + ligne[3]);
-								tmp2.ameliorer ();
-							}
+							System.out.println("\t" + Integer.parseInt(ligne[3]) + " niveau doublons " + Integer.parseInt(ligne[2]));
+							tmp2 = new Carte(tmp2.getNom(), tmp2.getRarete(), tmp2.getPV(), tmp2.getDeg(), tmp2.getVitAtt(), 0, 0, tmp2.getPrix());
+							for (int i = 0; i < Integer.parseInt(ligne[2]); i++) tmp2.addDoublon();
+							for (int i = 0; i < Integer.parseInt(ligne[3]); i++) tmp2.ameliorer();
 							cartes.add(tmp2);
 						}						
 						if (ligne[0].charAt(0) == 'O') j.ajouterCoffre(cr.getCoffreParNom(ligne[1]));
@@ -196,7 +185,7 @@ public class Serveur
 			} catch (Exception e) {}
 			return j;
 		}
-		sortie.println("Créez un mot de passe : ");
+		sortie.println("Compte non existant.\nCréez un mot de passe : ");
 		String mdp = "";
 		try {mdp = entree.readLine();}catch(Exception e){}
 		j = new Joueur(this, socket, cr, t, mdp, entree, sortie);
