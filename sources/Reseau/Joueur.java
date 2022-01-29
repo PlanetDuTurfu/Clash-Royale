@@ -35,7 +35,7 @@ public class Joueur implements Runnable, Serializable {
         this.mdp = mdp;
         this.entree = entree;
         this.sortie = sortie;
-        this.alCoffre.add(this.cr.getCoffreParNom("naze"));
+        this.alCoffre.add(this.cr.getCoffreParNom("coffre"));
         try { this.sortie.println("Petite aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
                                 "\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;"); } catch (Exception e) { e.printStackTrace(); }
     }
