@@ -51,9 +51,9 @@ public class Serveur
 						PrintWriter sortie = new PrintWriter   (socket.getOutputStream(), true);
 
 						// Informations du joueur
-						sortie.println("Entrez votre pseudo : ");
+						sortie.println("wait#pseudo#mdp");
 						Joueur joueur = Serveur.this.chargerJoueur(entree.readLine(), socket, cr, this, entree, sortie);
-						sortie.println("Connexion acceptée");
+						sortie.println("connexion#accepted");
 						Serveur.this.sauverJoueur(joueur);
 
 						//Thread
@@ -91,20 +91,10 @@ public class Serveur
 		}
 		else if (message.substring(0,2).equals("ameliorer".substring(0,2)))
 		{
-			try
-			{
-				if (joueur.getCartes().size() <= Integer.parseInt(message.split("  ")[1]))
-					joueur.getSortie().println("Cet indice est supérieur au nombre de cartes");
-				else if (joueur.ameliorer(Integer.parseInt(message.split("  ")[1])))
-					joueur.getSortie().println("Carte améliorée");
-				else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
-			}
-			catch(Exception e)
-			{
-				if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
-					joueur.getSortie().println("Carte améliorée");
-				else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
-			}
+			if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
+				joueur.getSortie().println("Carte améliorée");
+			else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
+			lire("to", joueur);
 		}
 		else if (message.equals("nextTri"))
 		{
@@ -124,15 +114,6 @@ public class Serveur
 			for (Carte c : joueur.getCartes())
 				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 			joueur.getSortie().println(affichage);
-			// String[] tabTri = message.split(" ");
-			// for (int i = tabTri.length-1; i > 0; i--)
-			// 	if (tabTri[i].substring(0,2).equals("trier".substring(0,2))) break;
-			// 	else if (tabTri[i].equals("Rarete")) joueur.trier(1);
-			// 	else if (tabTri[i].equals("Niveau")) joueur.trier(2);
-			// 	else if (tabTri[i].equals("Nom")) joueur.trier(3);
-			// 	else joueur.getSortie().println("Tri inconnu : " + tabTri[i]);
-			
-			// joueur.getSortie().println("Inventaire trié !");
 		}
 	
 		this.sauverJoueur(joueur);
@@ -154,17 +135,14 @@ public class Serveur
 
 	private Joueur chargerJoueur(String pseudo, Socket socket, ClashRoyale cr, Thread t, BufferedReader entree, PrintWriter sortie)
 	{
-		System.out.println("Pseudo : " + pseudo);
 		Joueur j = null;
 
 		File f = new File("./data/sauvegarde/"+pseudo+".account");
 		if(f.isFile())
 		{
-			sortie.println("Compte déjà existant.");
 			try {
 				Scanner sc = new Scanner( new FileReader("./data/sauvegarde/"+pseudo+".account"));
 				String mdp = sc.nextLine();
-				sortie.println("Entrez le mot de passe : ");
 				if (entree.readLine().equals(mdp))
 				{
 					j = new Joueur(this, socket, cr, t, mdp, entree, sortie);
@@ -178,7 +156,6 @@ public class Serveur
 						if (ligne[0].charAt(0) == 'A')
 						{
 							Carte tmp2 = cr.getCarteParNom(ligne[1]);
-							System.out.println("\t" + Integer.parseInt(ligne[3]) + " niveau doublons " + Integer.parseInt(ligne[2]));
 							tmp2 = new Carte(tmp2.getNom(), tmp2.getRarete(), tmp2.getPV(), tmp2.getDeg(), tmp2.getVitAtt(), 0, 0, tmp2.getPrix());
 							for (int i = 0; i < Integer.parseInt(ligne[2]); i++) tmp2.addDoublon();
 							for (int i = 0; i < Integer.parseInt(ligne[3]); i++) tmp2.ameliorer();
@@ -198,7 +175,6 @@ public class Serveur
 			} catch (Exception e) {}
 			return j;
 		}
-		sortie.println("Compte non existant.\nCréez un mot de passe : ");
 		String mdp = "";
 		try {mdp = entree.readLine();}catch(Exception e){}
 		j = new Joueur(this, socket, cr, t, mdp, entree, sortie);

@@ -32,7 +32,7 @@ class PanelImage extends JPanel
         this.setLayout(new GridLayout(3,1));
         this.add(new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT))));
         this.add(new PanelStats(attributs,c));
-        this.setPreferredSize(new Dimension(400,200));
+        this.setPreferredSize(new Dimension(250,500));
     }
 }
 

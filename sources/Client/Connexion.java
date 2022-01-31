@@ -33,7 +33,7 @@ public class Connexion {
                             msg = in.readLine();
                             if (msg.length() > 0)
                             {
-                                if (msg.equals("Entrez votre pseudo : "))
+                                if (msg.equals("wait#pseudo#mdp"))
                                 {
                                     Connexion.this.frm.setFrameRegister();
                                     Connexion.this.frm.pack();
@@ -43,12 +43,11 @@ public class Connexion {
                                     Connexion.this.frm.setFrameTo(msg.substring("@to#".length()));
                                     Connexion.this.frm.pack();
                                 }
-                                else if (msg.equals("Connexion acceptée"))
+                                else if (msg.equals("connexion#accepted"))
                                 {
                                     Connexion.this.frm.setFrameAccueil();
                                     Connexion.this.frm.pack();
                                 }
-                                else System.out.println(msg);
                             }
                         }
                         System.out.println("Serveur déconnecté");
@@ -63,7 +62,6 @@ public class Connexion {
 
     public void ecrire(String s)
     {
-        System.out.println("écrire");
         try { out.println(s); } catch(Exception e) { e.printStackTrace(); }
     }
 

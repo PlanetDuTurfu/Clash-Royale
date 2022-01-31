@@ -40,6 +40,7 @@ public class Frame extends JFrame implements ActionListener {
         this.btnTri = new JButton("Trier");
         this.add(this.btnTri, BorderLayout.NORTH);
         this.btnTri.addActionListener(this);
+        // this.btnTri.setPreferredSize(new Dimension(50,25));
         PanelTo pnl = new PanelTo(msg.split("#"), this.c);
         // this.add(pnl);
         this.add(new JScrollPane(pnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));

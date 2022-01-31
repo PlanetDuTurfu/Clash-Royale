@@ -67,22 +67,6 @@ public class Joueur implements Runnable, Serializable {
         return true;
     }
 
-    public boolean ameliorer(int indice)
-    {
-        if (indice > this.alCartes.size()) return false;
-        Carte carte = this.alCartes.get(indice);
-        if (carte.getDoublons() < (int)(Math.pow(2,carte.getNiveau())) || this.or < (int)(Math.pow(2,carte.getNiveau()))*15 || carte.getNiveau() == 10) return false;
-
-        int multiplicateur = 1;
-        if (carte.getRarete().equals("\033[91mRare\033[0m")) multiplicateur = 2;
-        if (carte.getRarete().equals("\033[95mEpique\033[0m")) multiplicateur = 3;
-        if (carte.getRarete().equals("\033[36mLégendaire\033[0m")) multiplicateur = 5;
-        this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15*multiplicateur);
-        carte.retirerDoublon((int)(Math.pow(2,carte.getNiveau())));
-        carte.ameliorer();
-        return true;
-    }
-
     private boolean isCarteDansLinv(String nom)
     {
         for (Carte c : this.alCartes)
@@ -126,7 +110,6 @@ public class Joueur implements Runnable, Serializable {
     {
         this.or += or;
     }
-
     private void enleverOr(int or)
     {
         this.or -= or;
