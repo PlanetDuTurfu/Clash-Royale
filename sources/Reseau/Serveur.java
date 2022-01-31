@@ -28,8 +28,11 @@ public class Serveur
 	private List<Jeu> jeux;
 	private List<Joueur> joueurEnRecherche;
 
+	private String tri;
+
 	public Serveur(ClashRoyale cr)
 	{
+		this.tri = "";
 		// Initialisation des attributs du jeu
 		this.joueurEnRecherche = new ArrayList<Joueur>();
 		this.jeux = new ArrayList<Jeu>();
@@ -50,6 +53,7 @@ public class Serveur
 						// Informations du joueur
 						sortie.println("Entrez votre pseudo : ");
 						Joueur joueur = Serveur.this.chargerJoueur(entree.readLine(), socket, cr, this, entree, sortie);
+						sortie.println("Connexion acceptée");
 						Serveur.this.sauverJoueur(joueur);
 
 						//Thread
@@ -66,19 +70,13 @@ public class Serveur
 
 	public void lire(String message, Joueur joueur)
 	{
-		if (message.length() < 2) return;
-		// Si la partie est lancée et que le jeu n'est pas terminé
-		// if (this.partieLancee && !this.jeu.getVictoire())
 		if (message.equals("to"))
 		{
-			joueur.getSortie().println(joueur.toString());
-			// Si le message est valide, on place le pion et on passe au tour suivant, sinon on affiche un message d'erreur
-			// if (this.isValide(message, gdc))
-			// {
-				// this.jeux.get(Integer.parseInt(message.charAt(0))).placer(message, gdc);
-			// }
-			// afficher l'erreur
-			// else gdc.getSortie().println("emplacement impossible");
+			String affichage = "@to#";
+			for (Carte c : joueur.getCartes())
+				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
+			joueur.getSortie().println(affichage);
+			this.sauverJoueur(joueur);
 		}
 		else if (message.equals("go"))
 		{
@@ -108,20 +106,34 @@ public class Serveur
 				else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
 			}
 		}
-		else if (message.substring(0,2).equals("trier".substring(0,2)))
+		else if (message.equals("nextTri"))
 		{
-			String[] tabTri = message.split(" ");
-			for (int i = tabTri.length-1; i > 0; i--)
-				if (tabTri[i].substring(0,2).equals("trier".substring(0,2))) break;
-				else if (tabTri[i].equals("Rarete")) joueur.trier(1);
-				else if (tabTri[i].equals("Niveau")) joueur.trier(2);
-				else if (tabTri[i].equals("Nom")) joueur.trier(3);
-				else joueur.getSortie().println("Tri inconnu : " + tabTri[i]);
+			System.out.println("nextTri");
+			switch (this.tri)
+			{
+				case "" : this.tri = "Rarete"; joueur.trier(1); break;
+				case "Rarete" : this.tri = "Niveau"; joueur.trier(2); break;
+				case "Niveau" : this.tri = "Nom"; joueur.trier(3); break;
+				case "Nom" : this.tri = "Prix"; joueur.trier(4); break;
+				case "Prix" : this.tri = "PV"; joueur.trier(5); break;
+				case "PV" : this.tri = "DEG"; joueur.trier(6); break;
+				case "Deg" : this.tri = "Rarete"; joueur.trier(1); break;
+			}
+
+			String affichage = "@to#";
+			for (Carte c : joueur.getCartes())
+				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
+			joueur.getSortie().println(affichage);
+			// String[] tabTri = message.split(" ");
+			// for (int i = tabTri.length-1; i > 0; i--)
+			// 	if (tabTri[i].substring(0,2).equals("trier".substring(0,2))) break;
+			// 	else if (tabTri[i].equals("Rarete")) joueur.trier(1);
+			// 	else if (tabTri[i].equals("Niveau")) joueur.trier(2);
+			// 	else if (tabTri[i].equals("Nom")) joueur.trier(3);
+			// 	else joueur.getSortie().println("Tri inconnu : " + tabTri[i]);
 			
-			joueur.getSortie().println("Inventaire trié !");
+			// joueur.getSortie().println("Inventaire trié !");
 		}
-		else joueur.getSortie().println("Petite aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
-										"\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;");
 	
 		this.sauverJoueur(joueur);
 	}
@@ -142,6 +154,7 @@ public class Serveur
 
 	private Joueur chargerJoueur(String pseudo, Socket socket, ClashRoyale cr, Thread t, BufferedReader entree, PrintWriter sortie)
 	{
+		System.out.println("Pseudo : " + pseudo);
 		Joueur j = null;
 
 		File f = new File("./data/sauvegarde/"+pseudo+".account");

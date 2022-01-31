@@ -9,4 +9,6 @@
 ./sources/Reseau/Joueur.java
 ./sources/Reseau/Serveur.java
 ./sources/Troupe.java
-./sources/Reseau/Connexion.java
+./sources/Client/Connexion.java
+./sources/Client/Frame.java
+./sources/Client/PanelCarte.java

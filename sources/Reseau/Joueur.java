@@ -36,8 +36,6 @@ public class Joueur implements Runnable, Serializable {
         this.entree = entree;
         this.sortie = sortie;
         this.alCoffre.add(this.cr.getCoffreParNom("coffre"));
-        try { this.sortie.println("Petite aide :\n - co : ouvrir un coffre;\n - to : toString votre inventaire;\n - go : lancer une partie." +
-                                "\n - am + nom : améliorer une troupe;\n - tr + type : trier l'inventaire;"); } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void ajouterCarte(Carte[] tabCartes)
@@ -98,7 +96,10 @@ public class Joueur implements Runnable, Serializable {
         {
             case 1 : Collections.sort(this.alCartes, new TriageParRarete()); break;
             case 2 : Collections.sort(this.alCartes, new TriageParNiveau()); break;
-            case 3 : Collections.sort(this.alCartes, new TriageParNom());
+            case 3 : Collections.sort(this.alCartes, new TriageParNom()); break;
+            case 4 : Collections.sort(this.alCartes, new TriageParPrix()); break;
+            case 5 : Collections.sort(this.alCartes, new TriageParPv()); break;
+            case 6 : Collections.sort(this.alCartes, new TriageParDeg()); break;
         }
     }
 
@@ -190,6 +191,30 @@ class TriageParNiveau implements Comparator<Carte>
     public int compare(Carte a, Carte b)
     {
         return b.getNiveau() - a.getNiveau();
+    }
+}
+
+class TriageParPrix implements Comparator<Carte>
+{
+    public int compare(Carte a, Carte b)
+    {
+        return b.getPrix() - a.getPrix();
+    }
+}
+
+class TriageParPv implements Comparator<Carte>
+{
+    public int compare(Carte a, Carte b)
+    {
+        return b.getPV() - a.getPV();
+    }
+}
+
+class TriageParDeg implements Comparator<Carte>
+{
+    public int compare(Carte a, Carte b)
+    {
+        return b.getDeg() - a.getDeg();
     }
 }
 
