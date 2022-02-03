@@ -4,9 +4,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -14,11 +15,16 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class PanelCarte extends JPanel{
-    public PanelCarte(String[] carte, Connexion c)
+    private int numLigne;
+    public PanelCarte(String[] carte, Connexion c, int numLigne)
     {
         this.setLayout(new FlowLayout());
         this.add(new PanelImage(carte, c));
+        this.numLigne = numLigne;
+        this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
+
+    public int getNumLigne() { return this.numLigne; }
 }
 
 class PanelImage extends JPanel
@@ -29,10 +35,10 @@ class PanelImage extends JPanel
         if (attributs[1].contains("Rare")) attributs[1] = "Rare";
         if (attributs[1].contains("Epique")) attributs[1] = "Épique";
         if (attributs[1].contains("Légendaire")) attributs[1] = "Légendaire";
-        this.setLayout(new GridLayout(3,1));
-        this.add(new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT))));
+        this.setLayout(new GridLayout(2,1));
+        JLabel tmpLabel = new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT)));
+        this.add(tmpLabel);
         this.add(new PanelStats(attributs,c));
-        this.setPreferredSize(new Dimension(250,500));
     }
 }
 

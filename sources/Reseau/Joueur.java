@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class Joueur implements Runnable, Serializable {
     private String nom;
     private String mdp;
+    private String tri;
     private int or;
     private ArrayList<Carte> alCartes = new ArrayList<Carte>();
     private ArrayList<Coffre> alCoffre = new ArrayList<Coffre>();
@@ -33,6 +34,7 @@ public class Joueur implements Runnable, Serializable {
         this.serveur = serveur;
         this.thread = thread;
         this.mdp = mdp;
+        this.tri = "défaut";
         this.entree = entree;
         this.sortie = sortie;
         this.alCoffre.add(this.cr.getCoffreParNom("coffre"));
@@ -74,19 +76,6 @@ public class Joueur implements Runnable, Serializable {
         return false;
     }
 
-    public void trier(int tri)
-    {
-        switch (tri)
-        {
-            case 1 : Collections.sort(this.alCartes, new TriageParRarete()); break;
-            case 2 : Collections.sort(this.alCartes, new TriageParNiveau()); break;
-            case 3 : Collections.sort(this.alCartes, new TriageParNom()); break;
-            case 4 : Collections.sort(this.alCartes, new TriageParPrix()); break;
-            case 5 : Collections.sort(this.alCartes, new TriageParPv()); break;
-            case 6 : Collections.sort(this.alCartes, new TriageParDeg()); break;
-        }
-    }
-
     public Carte getCarteParNom(String nom)
     {
         for (Carte c : this.alCartes)
@@ -123,6 +112,23 @@ public class Joueur implements Runnable, Serializable {
     public int                getOr(){ return this.or    ; }
     public ArrayList<Carte>  getCartes () { return this.alCartes; }
     public ArrayList<Coffre> getCoffres() { return this.alCoffre; }
+    public String getTri() { return this.tri; }
+
+    public void trier()
+    {
+        System.out.println(this.tri);
+        switch (this.tri)
+        {
+            case "défaut"   : this.tri = "Rarete";  Collections.sort(this.alCartes, new TriageParRarete ()); break;
+            case "Rarete"   : this.tri = "Niveau";  Collections.sort(this.alCartes, new TriageParNiveau ()); break;
+            case "Niveau"   : this.tri = "Nom";     Collections.sort(this.alCartes, new TriageParNom    ()); break;
+            case "Nom"      : this.tri = "Prix";    Collections.sort(this.alCartes, new TriageParPrix   ()); break;
+            case "Prix"     : this.tri = "PV";      Collections.sort(this.alCartes, new TriageParPv     ()); break;
+            case "PV"       : this.tri = "DEG";     Collections.sort(this.alCartes, new TriageParDeg    ()); break;
+            case "DEG"      : this.tri = "Rarete";  Collections.sort(this.alCartes, new TriageParRarete ()); break;
+        }
+        System.out.println(this.tri);
+    }
 
     public String toString()
     {

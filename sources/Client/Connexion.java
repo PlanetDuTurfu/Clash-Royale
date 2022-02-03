@@ -65,6 +65,11 @@ public class Connexion {
         try { out.println(s); } catch(Exception e) { e.printStackTrace(); }
     }
 
+    public void repaint()
+    {
+        this.frm.repaint();
+    }
+
     public static void clearConsole()
     {
 		if (estWindows())

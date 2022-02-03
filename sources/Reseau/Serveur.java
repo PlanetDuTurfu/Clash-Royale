@@ -28,11 +28,8 @@ public class Serveur
 	private List<Jeu> jeux;
 	private List<Joueur> joueurEnRecherche;
 
-	private String tri;
-
 	public Serveur(ClashRoyale cr)
 	{
-		this.tri = "";
 		// Initialisation des attributs du jeu
 		this.joueurEnRecherche = new ArrayList<Joueur>();
 		this.jeux = new ArrayList<Jeu>();
@@ -72,11 +69,10 @@ public class Serveur
 	{
 		if (message.equals("to"))
 		{
-			String affichage = "@to#";
+			String affichage = "@to#"+joueur.getTri()+"#";
 			for (Carte c : joueur.getCartes())
 				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 			joueur.getSortie().println(affichage);
-			this.sauverJoueur(joueur);
 		}
 		else if (message.equals("go"))
 		{
@@ -94,26 +90,13 @@ public class Serveur
 			if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
 				joueur.getSortie().println("Carte améliorée");
 			else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
+			
 			lire("to", joueur);
 		}
 		else if (message.equals("nextTri"))
 		{
-			System.out.println("nextTri");
-			switch (this.tri)
-			{
-				case "" : this.tri = "Rarete"; joueur.trier(1); break;
-				case "Rarete" : this.tri = "Niveau"; joueur.trier(2); break;
-				case "Niveau" : this.tri = "Nom"; joueur.trier(3); break;
-				case "Nom" : this.tri = "Prix"; joueur.trier(4); break;
-				case "Prix" : this.tri = "PV"; joueur.trier(5); break;
-				case "PV" : this.tri = "DEG"; joueur.trier(6); break;
-				case "Deg" : this.tri = "Rarete"; joueur.trier(1); break;
-			}
-
-			String affichage = "@to#";
-			for (Carte c : joueur.getCartes())
-				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
-			joueur.getSortie().println(affichage);
+			joueur.trier();
+			this.lire("to", joueur);
 		}
 	
 		this.sauverJoueur(joueur);
