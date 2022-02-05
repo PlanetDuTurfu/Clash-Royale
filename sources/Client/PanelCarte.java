@@ -5,7 +5,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -21,7 +20,7 @@ public class PanelCarte extends JPanel{
         this.setLayout(new FlowLayout());
         this.add(new PanelImage(carte, c));
         this.numLigne = numLigne;
-        this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        this.setBorder(BorderFactory.createLineBorder(Color.red, 5));
     }
 
     public int getNumLigne() { return this.numLigne; }

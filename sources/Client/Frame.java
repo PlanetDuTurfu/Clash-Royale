@@ -5,25 +5,63 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Frame extends JFrame implements ActionListener {
+public class Frame extends JFrame {
+    private PanelBase pnlBase;
+    private JScrollBar jsb;
+
+    public Frame(Connexion c)
+    {
+        this.setTitle("Clash de baisé !");
+		this.setLocation(0,0);
+        this.setSize(1080,1080);
+        this.setLayout(new FlowLayout());
+        this.pnlBase = new PanelBase(c, this);
+        this.add(this.pnlBase);
+
+        this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        this.setVisible(true);
+    }
+
+    public void setFrameRegister()
+    {
+        this.pnlBase.setFrameRegister();
+    }
+
+    public void setFrameTo(String msg)
+    {
+        if ( this.jsb != null ) this.remove(this.jsb);
+
+        this.pnlBase.setFrameTo(msg);
+        this.jsb = new JScrollBar(JScrollBar.VERTICAL);
+        this.add(this.jsb);
+        this.jsb.addAdjustmentListener(new AdjustmentListener() {  
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                Frame.this.pnlBase.afficherLigne(jsb.getValue());
+                Frame.this.repaint();
+            }  
+        });
+    }
+
+    public void setFrameAccueil()
+    {
+        this.pnlBase.setFrameAccueil();
+    }
+}
+
+class PanelBase extends JPanel implements ActionListener {
     private Connexion c;
     private PanelRegister pnlReg;
     private PanelAccueil pnlAcc;
     private PanelTo pnlTo;
     private JButton btnTri;
-    private JScrollBar jsb;
+    private Frame frm;
+    private Image img;
 
-    public Frame(Connexion c)
+    public PanelBase(Connexion c, Frame frm)
     {
         this.c = c;
-
-        this.setTitle("Clash de baisé !");
-		this.setLocation(0,0);
-        this.setSize(1080,1080);
+        this.frm = frm;
         this.setLayout(new FlowLayout());
-
-        this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        this.setVisible(true);
     }
 
     public void setFrameTo(String msg)
@@ -31,34 +69,33 @@ public class Frame extends JFrame implements ActionListener {
         if ( this.pnlAcc != null ) this.remove(this.pnlAcc);
         if ( this.pnlTo  != null ) this.remove(this.pnlTo );
         if ( this.btnTri != null ) this.remove(this.btnTri);
-        if ( this.jsb    != null ) this.remove(this.jsb   );
+
+        this.img = new ImageIcon("./data/img/fond.gif").getImage();
 
         String triActuel = "Trié par " + msg.split("#")[0];
         msg = msg.substring(msg.split("#")[0].length()+1);
         
-        this.setTitle("Clash de baisé ! - Inventaire");
+        this.frm.setTitle("Clash de baisé ! - Inventaire");
         
         this.btnTri = new JButton(triActuel);
         this.pnlTo = new PanelTo(msg.split("#"), this.c);
-        this.jsb = new JScrollBar(JScrollBar.VERTICAL);
+
+        this.pnlTo.setOpaque(false);
         
         this.add(this.btnTri, BorderLayout.NORTH);
         this.add(this.pnlTo);
-        this.add(this.jsb);
 
-        this.btnTri.addActionListener(this);
-        
-        jsb.addAdjustmentListener(new AdjustmentListener() {  
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                Frame.this.pnlTo.afficherLigne(jsb.getValue());
-                Frame.this.repaint();
-            }  
-        });  
+        this.btnTri.addActionListener(this); 
+    }
+
+    public void afficherLigne(int value)
+    {
+        this.pnlTo.afficherLigne(value);
     }
 
     public void setFrameRegister()
     {
-        this.setTitle("Clash de baisé ! - Connexion");
+        this.frm.setTitle("Clash de baisé ! - Connexion");
         this.pnlReg = new PanelRegister(this.c);
         this.add(this.pnlReg);
     }
@@ -66,7 +103,7 @@ public class Frame extends JFrame implements ActionListener {
     public void setFrameAccueil()
     {
         this.remove(this.pnlReg);
-        this.setTitle("Clash de baisé ! - Acceuil");
+        this.frm.setTitle("Clash de baisé ! - Acceuil");
         this.pnlAcc = new PanelAccueil(this.c);
         this.add(this.pnlAcc);
     }
@@ -77,6 +114,12 @@ public class Frame extends JFrame implements ActionListener {
         {
             this.c.ecrire("nextTri");
         }
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(this.img, 0, 0, this);
     }
 }
 
@@ -98,6 +141,7 @@ class PanelRegister extends JPanel implements ActionListener {
         this.btnValider = new JButton("Se connecter/S'inscrire");
         this.add(this.btnValider);
         this.btnValider.addActionListener(this);
+        System.out.println("print");
     }
 
     public void actionPerformed(ActionEvent e)
@@ -112,14 +156,12 @@ class PanelTo extends JPanel implements ActionListener{
     private Connexion c;
     private int nbLigne;
     private ArrayList<PanelCarte> pnlCartes = new ArrayList<PanelCarte>();
-    private Image img;
     public PanelTo(String[] msg, Connexion c)
     {
         this.c = c;
         this.nbLigne = 0;
         int nbCarte = 0;
         this.setLayout(new GridLayout(msg.length/6+1,6,5,5));
-        this.img = new ImageIcon("./data/img/fond.gif").getImage();
         for (String s : msg)
         {
             this.pnlCartes.add(new PanelCarte(s.split("¤"), this.c, this.nbLigne));
@@ -140,14 +182,6 @@ class PanelTo extends JPanel implements ActionListener{
         for(PanelCarte pc : this.pnlCartes)
             this.remove(pc);
         for(PanelCarte pc : this.pnlCartes) if (pc.getNumLigne() >= ligne) this.add(pc);
-    }
-
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-    
-        // Draw the background image.
-        g.drawImage(this.img, 0, 0, this);
     }
 }
 
