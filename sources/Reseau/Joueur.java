@@ -18,6 +18,7 @@ public class Joueur implements Runnable, Serializable {
     private String mdp;
     private String tri;
     private int or;
+    private int indiceScroll;
     private ArrayList<Carte> alCartes = new ArrayList<Carte>();
     private ArrayList<Coffre> alCoffre = new ArrayList<Coffre>();
     private ClashRoyale cr;
@@ -38,6 +39,7 @@ public class Joueur implements Runnable, Serializable {
         this.entree = entree;
         this.sortie = sortie;
         this.alCoffre.add(this.cr.getCoffreParNom("coffre"));
+        this.indiceScroll = 0;
     }
 
     public void ajouterCarte(Carte[] tabCartes)
@@ -103,6 +105,8 @@ public class Joueur implements Runnable, Serializable {
     {
         this.or -= or;
     }
+    public int getIndiceScroll() { return this.indiceScroll; }
+    public void setIndiceScroll(int i) { this.indiceScroll = i; }
 
     public BufferedReader getEntree(){ return this.entree; }
 	public PrintWriter    getSortie(){ return this.sortie; }
@@ -116,7 +120,6 @@ public class Joueur implements Runnable, Serializable {
 
     public void trier()
     {
-        System.out.println(this.tri);
         switch (this.tri)
         {
             case "défaut"   : this.tri = "Rarete";  Collections.sort(this.alCartes, new TriageParRarete ()); break;
@@ -127,7 +130,6 @@ public class Joueur implements Runnable, Serializable {
             case "PV"       : this.tri = "DEG";     Collections.sort(this.alCartes, new TriageParDeg    ()); break;
             case "DEG"      : this.tri = "Rarete";  Collections.sort(this.alCartes, new TriageParRarete ()); break;
         }
-        System.out.println(this.tri);
     }
 
     public String toString()

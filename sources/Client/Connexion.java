@@ -48,6 +48,11 @@ public class Connexion {
                                     Connexion.this.frm.setFrameAccueil();
                                     Connexion.this.frm.pack();
                                 }
+                                else if (msg.substring(0, "@co#".length()).equals("@co#"))
+                                {
+                                    Connexion.this.frm.setFrameCoffre(msg.substring("@co#".length()));
+                                    Connexion.this.frm.pack();
+                                }
                             }
                         }
                         System.out.println("Serveur déconnecté");

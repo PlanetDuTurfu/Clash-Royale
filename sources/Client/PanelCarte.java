@@ -1,17 +1,8 @@
 package sources.Client;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.BorderFactory;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
 
 public class PanelCarte extends JPanel{
     private int numLigne;
@@ -20,7 +11,7 @@ public class PanelCarte extends JPanel{
         this.setLayout(new FlowLayout());
         this.add(new PanelImage(carte, c));
         this.numLigne = numLigne;
-        this.setBorder(BorderFactory.createLineBorder(Color.red, 5));
+        this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
 
     public int getNumLigne() { return this.numLigne; }

@@ -74,6 +74,35 @@ public class Serveur
 				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 			joueur.getSortie().println(affichage);
 		}
+		else if (message.contains("to "))
+		{
+			String affichage = "";
+			int cpt = 1;
+			int debut = 0;
+			if (message.split(" ")[1].equals("+"))
+			{
+				if (joueur.getCartes().size() - joueur.getIndiceScroll() <= 5) return;
+				joueur.setIndiceScroll(joueur.getIndiceScroll() + 5);
+
+				debut = joueur.getIndiceScroll();
+				affichage = "@to#"+joueur.getTri()+"#";
+				for (Carte c : joueur.getCartes())
+					if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
+					else cpt++;
+			}
+			else
+			{
+				if (joueur.getIndiceScroll() < 5) return;
+				joueur.setIndiceScroll(joueur.getIndiceScroll() - 5);
+
+				debut = joueur.getIndiceScroll();
+				affichage = "@to#"+joueur.getTri()+"#";
+				for (Carte c : joueur.getCartes())
+					if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
+					else cpt++;
+			}
+			joueur.getSortie().println(affichage);
+		}
 		else if (message.equals("go"))
 		{
 			//Ajout du joueur dans la recherche de partie
@@ -82,8 +111,18 @@ public class Serveur
 		}
 		else if (message.equals("co"))
 		{
-			if (joueur.ouvrirCoffre()) joueur.getSortie().println("Un coffre a été ouvert !");
+			if (joueur.ouvrirCoffre())
+			{
+				joueur.getSortie().println("Un coffre a été ouvert !");
+				this.lire("cos", joueur);
+			}
 			else joueur.getSortie().println("Vous n'avez plus de coffres !");
+		}
+		else if (message.equals("cos"))
+		{
+			String affichage = "@co#";
+			for (Coffre c : joueur.getCoffres()) affichage += c.getNom() + "#";
+			joueur.getSortie().println(affichage.substring(0,affichage.length() - 1));
 		}
 		else if (message.substring(0,2).equals("ameliorer".substring(0,2)))
 		{
@@ -91,12 +130,23 @@ public class Serveur
 				joueur.getSortie().println("Carte améliorée");
 			else joueur.getSortie().println("Cette carte ne peut pas être améliorée");
 			
-			lire("to", joueur);
+			int cpt = 1;
+			int debut = joueur.getIndiceScroll();
+			String affichage = "@to#"+joueur.getTri()+"#";
+			for (Carte c : joueur.getCartes())
+				if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
+				else cpt++;
+
+			joueur.getSortie().println(affichage);
 		}
 		else if (message.equals("nextTri"))
 		{
 			joueur.trier();
 			this.lire("to", joueur);
+		}
+		else if (message.equals("accueil"))
+		{
+			joueur.getSortie().println("connexion#accepted");
 		}
 	
 		this.sauverJoueur(joueur);
