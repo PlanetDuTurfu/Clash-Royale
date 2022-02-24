@@ -9,7 +9,7 @@ public class PanelCarte extends JPanel{
     public PanelCarte(String[] carte, Connexion c)
     {
         this.setLayout(new FlowLayout());
-        this.img = new ImageIcon(new ImageIcon("./data/img/fond_de_baise.gif").getImage().getScaledInstance(290, 800, Image.SCALE_SMOOTH)).getImage();
+        this.img = new ImageIcon(new ImageIcon("./data/img/fond_de_bais.gif").getImage().getScaledInstance(290, 800, Image.SCALE_SMOOTH)).getImage();
         this.add(new PanelImage(carte, c));
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
