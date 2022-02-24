@@ -36,22 +36,18 @@ public class Connexion {
                                 if (msg.equals("wait#pseudo#mdp"))
                                 {
                                     Connexion.this.frm.setFrameRegister();
-                                    Connexion.this.frm.pack();
                                 }
                                 else if (msg.substring(0, "@to#".length()).equals("@to#"))
                                 {
                                     Connexion.this.frm.setFrameTo(msg.substring("@to#".length()));
-                                    Connexion.this.frm.pack();
                                 }
                                 else if (msg.equals("connexion#accepted"))
                                 {
                                     Connexion.this.frm.setFrameAccueil();
-                                    Connexion.this.frm.pack();
                                 }
                                 else if (msg.substring(0, "@co#".length()).equals("@co#"))
                                 {
                                     Connexion.this.frm.setFrameCoffre(msg.substring("@co#".length()));
-                                    Connexion.this.frm.pack();
                                 }
                             }
                         }

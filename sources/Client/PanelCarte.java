@@ -5,16 +5,12 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class PanelCarte extends JPanel{
-    private int numLigne;
-    public PanelCarte(String[] carte, Connexion c, int numLigne)
+    public PanelCarte(String[] carte, Connexion c)
     {
         this.setLayout(new FlowLayout());
         this.add(new PanelImage(carte, c));
-        this.numLigne = numLigne;
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
-
-    public int getNumLigne() { return this.numLigne; }
 }
 
 class PanelImage extends JPanel
@@ -26,8 +22,7 @@ class PanelImage extends JPanel
         if (attributs[1].contains("Epique")) attributs[1] = "Épique";
         if (attributs[1].contains("Légendaire")) attributs[1] = "Légendaire";
         this.setLayout(new GridLayout(2,1));
-        JLabel tmpLabel = new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT)));
-        this.add(tmpLabel);
+        this.add(new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT))));
         this.add(new PanelStats(attributs,c));
     }
 }
@@ -62,6 +57,7 @@ class Panel1 extends JPanel
 
 class Panel2 extends JPanel
 {
+    private JProgressBar jpb;
     public Panel2(String niveau, String doublons)
     {
         this.setLayout(new FlowLayout());
@@ -80,6 +76,10 @@ class Panel2 extends JPanel
             case 9 : total = 512; break;
         }
         this.add(new JLabel("("+doublons + "/" + total+")"));
+        this.jpb = new JProgressBar(JProgressBar.HORIZONTAL,0,total);
+        this.jpb.setValue(Integer.parseInt(doublons));
+        this.jpb.setStringPainted(true);
+        this.add(this.jpb);
     }
 }
 
