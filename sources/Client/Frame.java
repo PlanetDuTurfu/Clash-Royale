@@ -18,8 +18,12 @@ public class Frame extends JFrame implements ActionListener {
         this.c = c;
         this.setTitle("Clash de baisé !");
 		this.setLocation(0,0);
-        this.setSize(1290,720);
+        this.setSize(1460,820);
+        
+        this.setLayout(new BorderLayout());
+        this.setContentPane(new JLabel(new ImageIcon(new ImageIcon("./data/img/fond_de_baise.gif").getImage().getScaledInstance(1450, 820, Image.SCALE_DEFAULT))));
         this.setLayout(new FlowLayout());
+        
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         this.setVisible(true);
     }
@@ -27,11 +31,13 @@ public class Frame extends JFrame implements ActionListener {
     public void setFrameTo(String msg)
     {
         if ( this.pnlAcc != null ) this.remove(this.pnlAcc);
+        if ( this.pnlFTo != null ) this.remove(this.pnlFTo);
 
         this.setTitle("Clash de baisé ! - Inventaire");
         this.pnlFTo = new PanelFondTo(msg, this.c);
         this.add(this.pnlFTo);
-        this.pnlFTo.revalidate();
+        this.pnlFTo.setOpaque(false);
+        this.actualiser();
     }
 
     public void setFrameRegister()
@@ -39,7 +45,8 @@ public class Frame extends JFrame implements ActionListener {
         this.setTitle("Clash de baisé ! - Connexion");
         this.pnlReg = new PanelRegister(this.c);
         this.add(this.pnlReg);
-        this.pnlReg.revalidate();
+        this.pnlReg.setOpaque(false);
+        this.actualiser();
     }
 
     public void setFrameAccueil()
@@ -52,7 +59,7 @@ public class Frame extends JFrame implements ActionListener {
         this.setTitle("Clash de baisé ! - Acceuil");
         this.pnlAcc = new PanelAccueil(this.c);
         this.add(this.pnlAcc);
-        this.pnlAcc.revalidate();
+        this.actualiser();
     }
 
     public void setFrameCoffre(String msg)
@@ -61,13 +68,20 @@ public class Frame extends JFrame implements ActionListener {
         if (this.pnlCof != null) this.remove(this.pnlCof);
         this.setTitle("Clash de baisé ! - Coffres");
         this.pnlCof = new PanelCoffres(msg, this.c);
+        this.pnlCof.setOpaque(false);
         this.add(this.pnlCof);
-        this.pnlCof.revalidate();
+        this.actualiser();
     }
 
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == this.btnRetour) this.c.ecrire("accueil");
+    }
+
+    public void actualiser()
+    {
+        this.setSize(1449,820);
+        this.setSize(1450,820);
     }
 }
 
@@ -99,28 +113,10 @@ class PanelRegister extends JPanel implements ActionListener {
     }
 }
 
-class PanelTo extends JPanel {
-    private Connexion c;
-    private ArrayList<PanelCarte> pnlCartes = new ArrayList<PanelCarte>();
-    public PanelTo(String[] msg, Connexion c)
-    {
-        this.c = c;
-        this.setLayout(new GridLayout(0,4,5,5));
-        System.out.println(msg.length);
-        if (msg.length == 1 && msg[0].equals("")) return;
-        for (String s : msg)
-        {
-            this.pnlCartes.add(new PanelCarte(s.split("¤"), this.c));
-            this.add(this.pnlCartes.get(this.pnlCartes.size()-1));
-        }
-    }
-}
-
 class PanelAccueil extends JPanel implements ActionListener {
     private Connexion c;
     private JButton btnCartes;
     private JButton btnCoffres;
-    private Image img;
 
     public PanelAccueil(Connexion c)
     {
@@ -132,32 +128,26 @@ class PanelAccueil extends JPanel implements ActionListener {
         this.btnCoffres.addActionListener(this);
         this.add(this.btnCartes );
         this.add(this.btnCoffres);
-        this.img = new ImageIcon("./data/img/fond_de_baise.gif").getImage();
+
+        this.setOpaque(false);
     }
 
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == this.btnCoffres) this.c.ecrire("cos");
-        if (e.getSource() == this.btnCartes ) this.c.ecrire("to");
-    }
-
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(this.img, 0, 0, this);
+        if (e.getSource() == this.btnCartes ) this.c.ecrire("to 0");
     }
 }
 
 class PanelCoffres extends JPanel implements ActionListener {
     private JButton btnOuvrir;
     private JButton btnRet;
-    private Image img;
     private Connexion c;
     public PanelCoffres(String msg, Connexion c)
     {
         this.setLayout(new BorderLayout());
+        this.setSize(1450,820);
         this.c = c;
-        this.img       = new ImageIcon(new ImageIcon("./data/img/fond.gif").getImage().getScaledInstance(1920, 1080, Image.SCALE_DEFAULT)).getImage();
         this.btnRet    = new JButton("Retour");
         this.btnOuvrir = new JButton("Ouvrir ce coffre");
         
@@ -181,59 +171,55 @@ class PanelCoffres extends JPanel implements ActionListener {
             this.c.ecrire("accueil");
         }
     }
-
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(this.img, 0, 0, this);
-    }
 }
 
 class PanelP2 extends JPanel {
-    private Image img;
     public PanelP2(String msg)
     {
-        this.img = new ImageIcon(new ImageIcon("./data/img/fond.gif").getImage().getScaledInstance(1920, 1080, Image.SCALE_DEFAULT)).getImage();
-
-        this.setLayout(new GridLayout(msg.split("#").length / 5 + 1,6,5,5));
-
-        for (String s : msg.split("#"))
-        {
-            this.add(new PanelCoffre(s));
-        }
-    }
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(this.img, 0, 0, this);
+        this.setOpaque(false);
+        this.setLayout(new GridLayout(0,6,5,5));
+        for (String s : msg.split("#")) this.add(new PanelCoffre(s));
     }
 }
 
 class PanelFondTo extends JPanel {
-    private Image img;
     private Connexion c;
     private JPanel pnlTo;
     
     public PanelFondTo(String msg, Connexion c)
     {
         this.c = c;
-        this.img = new ImageIcon(new ImageIcon("./data/img/fond_de_baise.gif").getImage().getScaledInstance(1290, 720, Image.SCALE_DEFAULT)).getImage();
         this.setLayout(new BorderLayout());
 
-        this.pnlTo = new PanelTo(msg.substring(msg.split("#")[0].length()+1).split("#"), this.c);
-
         this.add(new PanelBoutonTo(msg,c), BorderLayout.NORTH);
+        String tmpmsg = msg.split("#")[0];
+        tmpmsg += msg.substring(msg.split("#")[0].length() + 1 + msg.split("#")[1].length());
+        msg = tmpmsg;
+
+        this.pnlTo = new PanelTo(msg.substring(msg.split("#")[0].length()+1).split("#"), this.c);
         this.add(this.pnlTo);
+        
         this.pnlTo.setOpaque(false);
-    }
-    
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(this.img, 0, 0, this);
     }
 }
 
+class PanelTo extends JPanel {
+    private Connexion c;
+    private ArrayList<PanelCarte> pnlCartes = new ArrayList<PanelCarte>();
+    
+    public PanelTo(String[] msg, Connexion c)
+    {
+        this.c = c;
+        this.setLayout(new GridLayout(0,5,5,5));
+        System.out.println(msg.length);
+        if (msg.length == 1 && msg[0].equals("")) return;
+        for (String s : msg)
+        {
+            this.pnlCartes.add(new PanelCarte(s.split("¤"), this.c));
+            this.add(this.pnlCartes.get(this.pnlCartes.size()-1));
+        }
+    }
+}
 class PanelBoutonTo extends JPanel implements ActionListener {
     private Connexion c;
     private JButton btnTri;
@@ -252,6 +238,7 @@ class PanelBoutonTo extends JPanel implements ActionListener {
         this.btnLignePrec = new JButton("Ligne précédente");
         this.btnRetour = new JButton("Retour");
 
+        this.add(new JLabel( msg.split("#")[1] +" d'or "));
         this.add(this.btnLignePrec, BorderLayout.NORTH);
         this.add(this.btnTri      , BorderLayout.NORTH);
         this.add(this.btnLigneSuiv, BorderLayout.NORTH);

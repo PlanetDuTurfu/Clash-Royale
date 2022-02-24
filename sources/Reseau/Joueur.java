@@ -59,12 +59,15 @@ public class Joueur implements Runnable, Serializable {
 
     public boolean ameliorer(Carte carte)
     {
-        if (carte.getDoublons() < (int)(Math.pow(2,carte.getNiveau())) || this.or < (int)(Math.pow(2,carte.getNiveau()))*15 || carte.getNiveau() == 10) return false;
-
         int multiplicateur = 1;
         if (carte.getRarete().equals("\033[91mRare\033[0m")) multiplicateur = 2;
         if (carte.getRarete().equals("\033[95mEpique\033[0m")) multiplicateur = 3;
         if (carte.getRarete().equals("\033[36mLégendaire\033[0m")) multiplicateur = 5;
+        
+        if (carte.getDoublons() < (int)(Math.pow(2,carte.getNiveau())) ||
+            this.or < (int)(Math.pow(2,carte.getNiveau()))*15*multiplicateur ||
+            carte.getNiveau() == 10) return false;
+
         this.enleverOr((int)(Math.pow(2,carte.getNiveau()))*15*multiplicateur);
         carte.retirerDoublon((int)(Math.pow(2,carte.getNiveau())));
         carte.ameliorer();

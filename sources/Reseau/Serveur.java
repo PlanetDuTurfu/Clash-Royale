@@ -67,16 +67,9 @@ public class Serveur
 
 	public void lire(String message, Joueur joueur)
 	{
-		if (message.equals("to"))
+		if (message.contains("to "))
 		{
-			String affichage = "@to#"+joueur.getTri()+"#";
-			for (Carte c : joueur.getCartes())
-				affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
-			joueur.getSortie().println(affichage);
-		}
-		else if (message.contains("to "))
-		{
-			String affichage = "";
+			String affichage = "@to#"+joueur.getTri()+"#"+joueur.getOr()+"#";
 			int cpt = 1;
 			int debut = 0;
 			if (message.split(" ")[1].equals("+"))
@@ -85,21 +78,25 @@ public class Serveur
 				joueur.setIndiceScroll(joueur.getIndiceScroll() + 5);
 
 				debut = joueur.getIndiceScroll();
-				affichage = "@to#"+joueur.getTri()+"#";
 				for (Carte c : joueur.getCartes())
 					if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 					else cpt++;
 			}
-			else
+			else if (message.split(" ")[1].equals("-"))
 			{
 				if (joueur.getIndiceScroll() < 5) return;
 				joueur.setIndiceScroll(joueur.getIndiceScroll() - 5);
 
 				debut = joueur.getIndiceScroll();
-				affichage = "@to#"+joueur.getTri()+"#";
 				for (Carte c : joueur.getCartes())
 					if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 					else cpt++;
+			}
+			else if (message.split(" ")[1].equals("0"))
+			{
+				joueur.setIndiceScroll(0);
+				for (Carte c : joueur.getCartes())
+					affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 			}
 			joueur.getSortie().println(affichage);
 		}
@@ -132,7 +129,7 @@ public class Serveur
 			
 			int cpt = 1;
 			int debut = joueur.getIndiceScroll();
-			String affichage = "@to#"+joueur.getTri()+"#";
+			String affichage = "@to#"+joueur.getTri()+"#"+joueur.getOr()+"#";
 			for (Carte c : joueur.getCartes())
 				if (cpt > debut) affichage += c.getNom()+"¤"+c.getRarete()+"¤"+c.getNiveau()+"¤"+c.getDoublons()+"¤"+c.getPV()+"¤"+c.getDeg()+"¤"+c.getVitAtt()+"#";
 				else cpt++;
@@ -142,7 +139,7 @@ public class Serveur
 		else if (message.equals("nextTri"))
 		{
 			joueur.trier();
-			this.lire("to", joueur);
+			this.lire("to 0", joueur);
 		}
 		else if (message.equals("accueil"))
 		{

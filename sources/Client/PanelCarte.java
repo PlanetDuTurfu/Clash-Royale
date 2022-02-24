@@ -5,11 +5,18 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class PanelCarte extends JPanel{
+    private Image img;
     public PanelCarte(String[] carte, Connexion c)
     {
         this.setLayout(new FlowLayout());
+        this.img = new ImageIcon(new ImageIcon("./data/img/fond_de_baise.gif").getImage().getScaledInstance(290, 800, Image.SCALE_SMOOTH)).getImage();
         this.add(new PanelImage(carte, c));
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+    }
+    
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, this);
     }
 }
 
@@ -24,6 +31,7 @@ class PanelImage extends JPanel
         this.setLayout(new GridLayout(2,1));
         this.add(new JLabel(new ImageIcon(new ImageIcon("./data/img/" + attributs[0] + ".gif").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT))));
         this.add(new PanelStats(attributs,c));
+        this.setOpaque(false);
     }
 }
 
@@ -36,6 +44,7 @@ class PanelStats extends JPanel
         this.add(new Panel2(attributs[2],attributs[3]));
         this.add(new Panel3(attributs[4],attributs[5],attributs[6]));
         this.add(new Panel4(attributs[0],c));
+        this.setOpaque(false);
     }
 }
 
@@ -52,6 +61,7 @@ class Panel1 extends JPanel
         if (rarete.equals("Épique")) lblRarete.setForeground(Color.MAGENTA);
         if (rarete.equals("Légendaire")) lblRarete.setForeground(Color.CYAN);
         this.add(lblRarete);
+        this.setOpaque(false);
     }
 }
 
@@ -78,8 +88,13 @@ class Panel2 extends JPanel
         this.add(new JLabel("("+doublons + "/" + total+")"));
         this.jpb = new JProgressBar(JProgressBar.HORIZONTAL,0,total);
         this.jpb.setValue(Integer.parseInt(doublons));
-        this.jpb.setStringPainted(true);
+        if (Integer.parseInt(doublons) > total)
+        {
+            this.jpb.setString("+"+(Integer.parseInt(doublons)-total));
+            this.jpb.setStringPainted(true);
+        }
         this.add(this.jpb);
+        this.setOpaque(false);
     }
 }
 
@@ -91,6 +106,7 @@ class Panel3 extends JPanel
         this.add(new JLabel(pv + "PV"));
         this.add(new JLabel(deg + "dégats"));
         this.add(new JLabel(vit_att + "vitesse d'attaque"));
+        this.setOpaque(false);
     }
 }
 
@@ -107,6 +123,7 @@ class Panel4 extends JPanel implements ActionListener
         btnLevelUp.setSize(new Dimension(100,33));
         this.add(btnLevelUp);
         btnLevelUp.addActionListener(this);
+        this.setOpaque(false);
     }
 
     public void actionPerformed(ActionEvent e)

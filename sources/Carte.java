@@ -36,7 +36,7 @@ public class Carte {
 
     public void ameliorer()
     {
-        int pourcentAmelioration = 10 - this.niveau;
+        int pourcentAmelioration = 10 - this.niveau / 2;
         this.pv += this.pv * pourcentAmelioration / 100;
         this.deg += this.deg * pourcentAmelioration / 100;
         this.niveau++;
