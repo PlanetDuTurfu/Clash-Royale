@@ -11,7 +11,6 @@ public class Connexion {
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
-    // private final Scanner sc = new Scanner(System.in);//pour lire à partir du clavier
     private static String OS = System.getProperty("os.name").toLowerCase();
     private Frame frm;
 
@@ -66,11 +65,6 @@ public class Connexion {
         try { out.println(s); } catch(Exception e) { e.printStackTrace(); }
     }
 
-    public void repaint()
-    {
-        this.frm.repaint();
-    }
-
     public static void clearConsole()
     {
 		if (estWindows())
@@ -89,6 +83,4 @@ public class Connexion {
 	{
 		return (OS.indexOf("win") >= 0);	
 	}
-
-    public static void main(String[] args) { new Connexion(); }
 }

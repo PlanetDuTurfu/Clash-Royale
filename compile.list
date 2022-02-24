@@ -1,5 +1,7 @@
 -encoding utf-8
 
+./LancerServ.java
+./LancerClient.java
 ./sources/Carte.java
 ./sources/Cartes.java
 ./sources/Coffre.java

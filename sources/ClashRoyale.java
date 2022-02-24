@@ -9,7 +9,7 @@ public class ClashRoyale {
     private Coffres coffres;
     private Cartes cartes;
 
-    private ClashRoyale()
+    public ClashRoyale()
     {
         new Serveur(this);
         cartes  = new Cartes();
@@ -28,8 +28,4 @@ public class ClashRoyale {
     public ArrayList<Carte> getCartesLegendaire() { return cartes.getCartesLegendaire(); }
     public Carte       getCarteParNom(String nom) { return cartes.getCarteParNom  (nom); }
     public Coffre     getCoffreParNom(String nom) { return coffres.getCoffreParNom(nom); }
-
-    public static void main(String[] args) {
-        new ClashRoyale();
-    }
 }
