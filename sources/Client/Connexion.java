@@ -47,6 +47,10 @@ public class Connexion {
                                 {
                                     Connexion.this.frm.setFrameCoffre(msg.substring("@co".length()));
                                 }
+                                else if (msg.substring(0, "@carte".length()).equals("@carte"))
+                                {
+                                    Connexion.this.frm.setFrameOuverture(msg.substring("@carte#".length()));
+                                }
                             }
                         }
                         System.out.println("Serveur déconnecté");

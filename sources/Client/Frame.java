@@ -11,6 +11,7 @@ public class Frame extends JFrame implements ActionListener {
     private PanelAccueil pnlAcc;
     private PanelFondTo pnlFTo;
     private PanelCoffres pnlCof;
+    private PanelOuverture pnlOuv;
     private JButton btnRetour;
 
     public Frame(Connexion c)
@@ -74,6 +75,18 @@ public class Frame extends JFrame implements ActionListener {
         this.actualiser();
     }
 
+    public void setFrameOuverture(String msg)
+    {
+        if (this.pnlCof != null) this.remove(this.pnlCof);
+
+        this.setTitle("Clash de baisé ! - Ouverture");
+        this.pnlOuv = new PanelOuverture(msg, this);
+        this.pnlOuv.setOpaque(true);
+        this.add(this.pnlOuv);
+        this.remove(this.pnlOuv);
+        this.actualiser();
+    }
+
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == this.btnRetour) this.c.ecrire("accueil");
@@ -81,8 +94,8 @@ public class Frame extends JFrame implements ActionListener {
 
     public void actualiser()
     {
-        this.setSize(1449,820);
-        this.setSize(1450,820);
+        this.setSize(1459,820);
+        this.setSize(1460,820);
     }
 }
 
@@ -250,5 +263,85 @@ class PanelBoutonTo extends JPanel implements ActionListener {
         if (e.getSource() == this.btnLignePrec) this.c.ecrire("to -");
         if (e.getSource() == this.btnLigneSuiv) this.c.ecrire("to +");
         if (e.getSource() == this.btnRetour   ) this.c.ecrire("accueil");
+    }
+}
+
+class PanelOuverture extends JPanel {
+
+    public PanelOuverture(String msg, Frame frm)
+    {
+        ArrayList<CarteTmp> ancCar = new ArrayList<CarteTmp>();
+        ArrayList<CarteTmp> newCar = new ArrayList<CarteTmp>();
+        
+        for (String s : msg.split("#"))
+        {
+            boolean tmp = false;
+            if (s.split("¤")[1].equals("true"))
+                newCar.add(new CarteTmp(s.split("¤")[0]));
+            else
+            {
+                for (CarteTmp t : newCar)
+                    if (s.split("¤")[0].equals(t.getNom()))
+                    {
+                        t.addDoublon();
+                        tmp = true;
+                        break;
+                    }
+                
+                if (!tmp)
+                {
+                    for (CarteTmp t : ancCar)
+                    {
+                        if (t.getNom().equals(s.split("¤")[0]))
+                        {
+                            t.addDoublon();
+                            tmp = true;
+                            break;
+                        }
+                    }
+                }
+                if (!tmp) ancCar.add(new CarteTmp(s.split("¤")[0]));
+            }
+        }
+
+        for (CarteTmp ct : ancCar)
+        {
+            JLabel jl = new JLabel(new ImageIcon(new ImageIcon("./data/img/Animation_carte.gif").getImage().getScaledInstance(1460, 820, Image.SCALE_DEFAULT)));
+            this.add(jl);
+            frm.actualiser();
+            try { Thread.sleep(500); } catch (Exception e) {}
+            this.remove(jl);
+            jl = new JLabel(new ImageIcon(new ImageIcon("./data/img/Animation_carte_commune.gif").getImage().getScaledInstance(1460, 820, Image.SCALE_DEFAULT)));
+            this.add(jl);
+            frm.actualiser();
+            try { Thread.sleep(250); } catch (Exception e) {}
+            this.remove(jl);
+        }
+    }
+}
+
+class CarteTmp {
+    private int nbDoublons;
+    private String nom;
+
+    public CarteTmp(String nom)
+    {
+        this.nom = nom;
+        this.nbDoublons = 1;
+    }
+
+    public void addDoublon()
+    {
+        this.nbDoublons++;
+    }
+
+    public int getDoublons()
+    {
+        return this.nbDoublons;
+    }
+
+    public String getNom()
+    {
+        return this.nom;
     }
 }

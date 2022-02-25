@@ -44,20 +44,20 @@ public class Joueur implements Runnable, Serializable {
 
     public void ajouterCarte(Carte[] tabCartes)
     {
+        String affichage = "@carte#";
         for (Carte c : tabCartes)
             if ( !this.isCarteDansLinv(c.getNom()) )
             {
-                this.sortie.println("@carte#" + c.getNom() +"#true" );
-                try { this.entree.readLine(); } catch (Exception e) {}
+                affichage += c.getNom() + "¤true#" ;
                 this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1, 1, c.getPrix()));
             }
             else
             {
-                this.sortie.println("@carte#" + c.getNom() +"#false");
-                try { this.entree.readLine(); } catch (Exception e) {}
-                Carte cTmp = this.getCarteParNom(c.getNom());
-                cTmp.addDoublon();
+                affichage += c.getNom() + "¤false#";
+                this.getCarteParNom(c.getNom()).addDoublon();
             }
+        
+        this.sortie.println(affichage);
     }
     public void setCartes(ArrayList<Carte> cartes)
     {
