@@ -66,6 +66,7 @@ public class Frame extends JFrame implements ActionListener {
     {
         if (this.pnlAcc != null) this.remove(this.pnlAcc);
         if (this.pnlCof != null) this.remove(this.pnlCof);
+
         this.setTitle("Clash de baisé ! - Coffres");
         this.pnlCof = new PanelCoffres(msg, this.c);
         this.pnlCof.setOpaque(false);
@@ -140,45 +141,36 @@ class PanelAccueil extends JPanel implements ActionListener {
 }
 
 class PanelCoffres extends JPanel implements ActionListener {
-    private JButton btnOuvrir;
     private JButton btnRet;
     private Connexion c;
     public PanelCoffres(String msg, Connexion c)
     {
         this.setLayout(new BorderLayout());
         this.setSize(1450,820);
-        this.c = c;
-        this.btnRet    = new JButton("Retour");
-        this.btnOuvrir = new JButton("Ouvrir ce coffre");
         
-        this.add(this.btnOuvrir, BorderLayout.NORTH);
-        this.add(this.btnRet, BorderLayout.SOUTH);
-        this.add(new PanelP2(msg), BorderLayout.CENTER);
+        this.c = c;
+        this.btnRet = new JButton("Retour");
+        
+        this.add(this.btnRet, BorderLayout.NORTH);
+        this.add(new PanelP2(msg, c), BorderLayout.CENTER);
 
-        this.btnOuvrir.addActionListener(this);
         this.btnRet.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == this.btnOuvrir)
-        {
-            this.c.ecrire("co");
-        }
-
-        if (e.getSource() == this.btnRet)
-        {
             this.c.ecrire("accueil");
-        }
     }
 }
 
 class PanelP2 extends JPanel {
-    public PanelP2(String msg)
+    public PanelP2(String msg, Connexion c)
     {
         this.setOpaque(false);
-        this.setLayout(new GridLayout(0,6,5,5));
-        for (String s : msg.split("#")) this.add(new PanelCoffre(s));
+        this.setLayout(new GridLayout(0,5,5,5));
+        if (msg.equals("")) return;
+        msg = msg.substring(1);
+        for (String s : msg.split("#")) this.add(new PanelCoffre(s,c));
     }
 }
 
@@ -211,7 +203,6 @@ class PanelTo extends JPanel {
     {
         this.c = c;
         this.setLayout(new GridLayout(0,5,5,5));
-        System.out.println(msg.length);
         if (msg.length == 1 && msg[0].equals("")) return;
         for (String s : msg)
         {
@@ -220,6 +211,7 @@ class PanelTo extends JPanel {
         }
     }
 }
+
 class PanelBoutonTo extends JPanel implements ActionListener {
     private Connexion c;
     private JButton btnTri;

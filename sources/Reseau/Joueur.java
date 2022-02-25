@@ -45,9 +45,16 @@ public class Joueur implements Runnable, Serializable {
     public void ajouterCarte(Carte[] tabCartes)
     {
         for (Carte c : tabCartes)
-            if ( !this.isCarteDansLinv(c.getNom()) ) this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1, 1, c.getPrix()));
+            if ( !this.isCarteDansLinv(c.getNom()) )
+            {
+                this.sortie.println("@carte#" + c.getNom() +"#true" );
+                try { this.entree.readLine(); } catch (Exception e) {}
+                this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1, 1, c.getPrix()));
+            }
             else
             {
+                this.sortie.println("@carte#" + c.getNom() +"#false");
+                try { this.entree.readLine(); } catch (Exception e) {}
                 Carte cTmp = this.getCarteParNom(c.getNom());
                 cTmp.addDoublon();
             }
@@ -92,12 +99,18 @@ public class Joueur implements Runnable, Serializable {
     {
         this.alCoffre.add(coffre);
     }
-    public boolean ouvrirCoffre()
+    public boolean ouvrirCoffre(String nom)
     {
         if (this.alCoffre.size() == 0) return false;
-        
-        this.cr.ouvrirCoffre(this.alCoffre.get(0), this);
-        this.alCoffre.remove(0);
+        for (Coffre c : this.alCoffre)
+        {
+            if (c.getNom().equals(nom))
+            {
+                this.cr.ouvrirCoffre(c, this);
+                this.alCoffre.remove(c);
+                break;
+            }
+        }
         return true;
     }
     public void ajouterOr(int or)

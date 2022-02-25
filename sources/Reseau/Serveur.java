@@ -106,9 +106,9 @@ public class Serveur
 			this.joueurEnRecherche.add(joueur);
 			if ( this.joueurEnRecherche.size() >= 2 ) this.nouvellePartie();
 		}
-		else if (message.equals("co"))
+		else if (message.substring(0,"co ".length()).equals("co "))
 		{
-			if (joueur.ouvrirCoffre())
+			if (joueur.ouvrirCoffre(message.split("  ")[1]))
 			{
 				joueur.getSortie().println("Un coffre a été ouvert !");
 				this.lire("cos", joueur);

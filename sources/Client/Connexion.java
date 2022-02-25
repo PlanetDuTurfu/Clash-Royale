@@ -3,7 +3,6 @@ package sources.Client;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 // import java.util.Scanner;
 
@@ -14,11 +13,11 @@ public class Connexion {
     private static String OS = System.getProperty("os.name").toLowerCase();
     private Frame frm;
 
-    public Connexion()
+    public Connexion(String ip)
     {
         try {
             this.frm = new Frame(this);
-            this.clientSocket = new Socket(InetAddress.getLocalHost(),6000);
+            this.clientSocket = new Socket(ip,6000);
             this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
             this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -36,7 +35,7 @@ public class Connexion {
                                 {
                                     Connexion.this.frm.setFrameRegister();
                                 }
-                                else if (msg.substring(0, "@to#".length()).equals("@to#"))
+                                else if (msg.substring(0, "@to".length()).equals("@to"))
                                 {
                                     Connexion.this.frm.setFrameTo(msg.substring("@to#".length()));
                                 }
@@ -44,9 +43,9 @@ public class Connexion {
                                 {
                                     Connexion.this.frm.setFrameAccueil();
                                 }
-                                else if (msg.substring(0, "@co#".length()).equals("@co#"))
+                                else if (msg.substring(0, "@co".length()).equals("@co"))
                                 {
-                                    Connexion.this.frm.setFrameCoffre(msg.substring("@co#".length()));
+                                    Connexion.this.frm.setFrameCoffre(msg.substring("@co".length()));
                                 }
                             }
                         }
