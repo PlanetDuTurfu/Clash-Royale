@@ -10,15 +10,15 @@ public class Coffres {
     {
         this.ctrl = ctrl;
         //                        Nom du coffre       NbOr  nbC nbR nbE nbL
-        alCoffres.add(new Coffre("Coffre naze"      ,   80,  20,  3,  0, 0));
-        alCoffres.add(new Coffre("Coffre en bois"   ,  170,  35,  6,  0, 0));
-        alCoffres.add(new Coffre("Coffre stylax"    ,  300,  70, 15,  2, 0));
-        alCoffres.add(new Coffre("Coffre EZ"        ,  600, 120, 30,  3, 0));
-        alCoffres.add(new Coffre("Coffre du futur"  , 1000, 170, 20,  4, 0));
-        alCoffres.add(new Coffre("Coffre OP"        , 1600, 210, 50,  7, 1));
-        alCoffres.add(new Coffre("Rodocoffre"       , 2200, 300, 65, 10, 1));
-        alCoffres.add(new Coffre("Coffre commun"    , 1000, 600,  0,  0, 0));
-        alCoffres.add(new Coffre("Coffre rare"      , 1200,   0,100,  0, 0));
+        alCoffres.add(new Coffre("Coffre naze"      ,   80,  17,  3,  0, 0));
+        alCoffres.add(new Coffre("Coffre en bois"   ,  170,  30,  6,  0, 0));
+        alCoffres.add(new Coffre("Coffre stylax"    ,  300,  65, 14,  1, 0));
+        alCoffres.add(new Coffre("Coffre EZ"        ,  600, 100, 20,  2, 0));
+        alCoffres.add(new Coffre("Coffre du futur"  , 1000, 150, 16,  3, 0));
+        alCoffres.add(new Coffre("Coffre OP"        , 1600, 195, 30,  6, 1));
+        alCoffres.add(new Coffre("Rodocoffre"       , 2200, 275, 48, 10, 1));
+        alCoffres.add(new Coffre("Coffre commun"    ,  800, 370,  0,  0, 0));
+        alCoffres.add(new Coffre("Coffre rare"      , 1200,   0, 90,  0, 0));
         alCoffres.add(new Coffre("Coffre épique"    , 1500,   0,  0, 20, 0));
         alCoffres.add(new Coffre("Coffre légendaire", 2000,   0,  0,  0, 2));
     }
@@ -53,11 +53,11 @@ public class Coffres {
     
         for (int i = 0; i < coffre.getCommune(); i++)
         {
-            if (Math.random() * 1000 > 950)
+            if (Math.random() * 100 > 95)
             {
-                if (Math.random() * 1000 > 900)
+                if (Math.random() * 100 > 70)
                 {
-                    if (Math.random() * 1000 > 910)
+                    if (Math.random() * 100 > 80)
                     {
                         tmpCommune--;
                         tmpLegendaire++;

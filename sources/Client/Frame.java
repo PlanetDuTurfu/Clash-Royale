@@ -331,16 +331,20 @@ class PanelOuverture extends JPanel implements MouseListener {
         try { Thread.sleep(1000); } catch (Exception e) {}
         this.remove(jl);
 
-        for (CarteTmp ct : ancCar)
-            this.affichageContenuCoffre(ct);
-
-        for (CarteTmp ct : newCar)
-            this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : ancCar) if (ct.getRarete().equals("commune")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : newCar) if (ct.getRarete().equals("commune")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : ancCar) if (ct.getRarete().equals("rare")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : newCar) if (ct.getRarete().equals("rare")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : ancCar) if (ct.getRarete().equals("épique")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : newCar) if (ct.getRarete().equals("épique")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : ancCar) if (ct.getRarete().equals("légendaire")) this.affichageContenuCoffre(ct);
+        for (CarteTmp ct : newCar) if (ct.getRarete().equals("légendaire")) this.affichageContenuCoffre(ct);
     }
 
     private void affichageContenuCoffre(CarteTmp ct)
     {
         JLabel jl;
+
         // Animation ouverture rareté
         this.passerAnim = false;
         jl = new JLabel(new ImageIcon(new ImageIcon("./data/img/Animation_carte_"+ct.getRarete()+".gif").getImage().getScaledInstance(1460, 820, Image.SCALE_DEFAULT)));
@@ -370,11 +374,11 @@ class PanelOuverture extends JPanel implements MouseListener {
                                 try { Thread.sleep(tempsAttendre); } catch (Exception e) {};
                                 this.animation(ct, tpsAttendu+tempsAttendre);
                                 break;
-            case "rare"       : if (tpsAttendu >= 1000) return;
+            case "rare"       : if (tpsAttendu >= 750) return;
                                 try { Thread.sleep(tempsAttendre); } catch (Exception e) {};
                                 this.animation(ct,tpsAttendu+tempsAttendre);
                                 break;
-            case "épique"     : if (tpsAttendu >= 5500) return;
+            case "épique"     : if (tpsAttendu >= 4750) return;
                                 try { Thread.sleep(tempsAttendre); } catch (Exception e) {};
                                 this.animation(ct,tpsAttendu+tempsAttendre);
                                 break;
