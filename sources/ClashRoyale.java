@@ -28,4 +28,5 @@ public class ClashRoyale {
     public ArrayList<Carte> getCartesLegendaire() { return cartes.getCartesLegendaire(); }
     public Carte       getCarteParNom(String nom) { return cartes.getCarteParNom  (nom); }
     public Coffre     getCoffreParNom(String nom) { return coffres.getCoffreParNom(nom); }
+    public Coffre               getRandomCoffre() { return coffres.getRandomCoffre  (0); }
 }

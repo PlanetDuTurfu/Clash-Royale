@@ -38,7 +38,11 @@ public class Joueur implements Runnable, Serializable {
         this.tri = "défaut";
         this.entree = entree;
         this.sortie = sortie;
-        this.alCoffre.add(this.cr.getCoffreParNom("coffre"));
+        this.alCoffre.add(this.cr.getRandomCoffre());
+        this.alCoffre.add(this.cr.getRandomCoffre());
+        this.alCoffre.add(this.cr.getRandomCoffre());
+        this.alCoffre.add(this.cr.getRandomCoffre());
+        this.alCoffre.add(this.cr.getRandomCoffre());
         this.indiceScroll = 0;
     }
 
@@ -48,12 +52,12 @@ public class Joueur implements Runnable, Serializable {
         for (Carte c : tabCartes)
             if ( !this.isCarteDansLinv(c.getNom()) )
             {
-                affichage += c.getNom() + "¤true#" ;
+                affichage += c.getNom() + "¤" + c.getRarete() + "¤true#";
                 this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1, 1, c.getPrix()));
             }
             else
             {
-                affichage += c.getNom() + "¤false#";
+                affichage += c.getNom() + "¤" + c.getRarete() + "¤false#";
                 this.getCarteParNom(c.getNom()).addDoublon();
             }
         

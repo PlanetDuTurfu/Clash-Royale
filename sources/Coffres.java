@@ -30,6 +30,13 @@ public class Coffres {
         return null;
     }
 
+    public Coffre getRandomCoffre(int proba)
+    {
+        if (proba == 60) return this.getCoffreParNom("Rodocoffre");
+        if (Math.random() * 100 > 640 + proba) return this.getRandomCoffre(proba+10);
+        return alCoffres.get(proba/10);
+    }
+
     public Carte[] ouvrirCoffre(Coffre coffre)
     {
         int tmpCommune = coffre.getCommune();
