@@ -27,12 +27,14 @@ public class Serveur
 	// Attributs du jeu
 	private List<Jeu> jeux;
 	private List<Joueur> joueurEnRecherche;
+	private ClashRoyale cr;
 
 	public Serveur(ClashRoyale cr)
 	{
 		// Initialisation des attributs du jeu
 		this.joueurEnRecherche = new ArrayList<Joueur>();
 		this.jeux = new ArrayList<Jeu>();
+		this.cr = cr;
 
 		// Création du serveur
 		try { this.serveur = new ServerSocket(6000); }
@@ -74,8 +76,8 @@ public class Serveur
 			int debut = 0;
 			if (message.split(" ")[1].equals("+"))
 			{
-				if (joueur.getCartes().size() - joueur.getIndiceScroll() <= 5) return;
-				joueur.setIndiceScroll(joueur.getIndiceScroll() + 5);
+				if (joueur.getCartes().size() - joueur.getIndiceScroll() <= 4) return;
+				joueur.setIndiceScroll(joueur.getIndiceScroll() + 4);
 
 				debut = joueur.getIndiceScroll();
 				for (Carte c : joueur.getCartes())
@@ -84,8 +86,8 @@ public class Serveur
 			}
 			else if (message.split(" ")[1].equals("-"))
 			{
-				if (joueur.getIndiceScroll() < 5) return;
-				joueur.setIndiceScroll(joueur.getIndiceScroll() - 5);
+				if (joueur.getIndiceScroll() < 4) return;
+				joueur.setIndiceScroll(joueur.getIndiceScroll() - 4);
 
 				debut = joueur.getIndiceScroll();
 				for (Carte c : joueur.getCartes())
@@ -117,6 +119,7 @@ public class Serveur
 		}
 		else if (message.equals("cos"))
 		{
+			joueur.ajouterCoffre(this.cr.getRandomCoffre());
 			String affichage = "@co#";
 			for (Coffre c : joueur.getCoffres()) affichage += c.getNom() + "#";
 			joueur.getSortie().println(affichage.substring(0,affichage.length() - 1));

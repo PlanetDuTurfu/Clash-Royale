@@ -16,6 +16,7 @@ public class PanelCoffre extends JPanel implements ActionListener{
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         this.btn = new JButton(new ImageIcon(new ImageIcon("./data/img/" + coffre + ".jpg").getImage().getScaledInstance(220, 220, Image.SCALE_DEFAULT)));
         this.add(this.btn);
+        this.btn.setOpaque(false);
         this.btn.addActionListener(this);
     }
 

@@ -1,14 +1,12 @@
 package sources.Reseau;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-
 import sources.Carte;
 import sources.ClashRoyale;
 import sources.Coffre;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.io.BufferedReader;
@@ -17,9 +15,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Serializable;
 
-public class Joueur implements Runnable, Serializable {
+public class Joueur implements Runnable {
     private String nom;
     private String mdp;
     private String tri;
@@ -44,11 +41,6 @@ public class Joueur implements Runnable, Serializable {
         this.tri = "défaut";
         this.entree = entree;
         this.sortie = sortie;
-        this.alCoffre.add(this.cr.getRandomCoffre());
-        this.alCoffre.add(this.cr.getRandomCoffre());
-        this.alCoffre.add(this.cr.getRandomCoffre());
-        this.alCoffre.add(this.cr.getRandomCoffre());
-        this.alCoffre.add(this.cr.getRandomCoffre());
         this.indiceScroll = 0;
     }
 
@@ -108,6 +100,7 @@ public class Joueur implements Runnable, Serializable {
     public void ajouterCoffre(Coffre coffre)
     {
         this.alCoffre.add(coffre);
+        this.addLog("added coffre " + this.alCoffre.get(this.alCoffre.size()-1).getNom());
     }
     public boolean ouvrirCoffre(String nom)
     {
@@ -188,13 +181,7 @@ public class Joueur implements Runnable, Serializable {
 			{
 				// lecture du message du client
                 String msg = this.entree.readLine();
-                try {
-                    File file = new File("./data/logs/"+LocalDateTime.now().getYear() +"-"+ LocalDateTime.now().getMonthValue() +"-"+ LocalDateTime.now().getDayOfMonth() + ".log");
-                    if (!file.exists()) file.createNewFile();
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), true));
-                    bw.write(LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":"+LocalDateTime.now().getSecond()+" │ "+this.nom+" -> "+msg+"\n");
-                    bw.close();
-                } catch (Exception e) {}
+                this.addLog(msg);
 				this.serveur.lire(msg, this);
 			}
 			catch(Exception e)
@@ -207,6 +194,17 @@ public class Joueur implements Runnable, Serializable {
             }
 		}
 	}
+
+    private void addLog(String msg)
+    {
+        try {
+            File file = new File("./data/logs/"+LocalDateTime.now().getYear() +"-"+ LocalDateTime.now().getMonthValue() +"-"+ LocalDateTime.now().getDayOfMonth() + ".log");
+            if (!file.exists()) file.createNewFile();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), true));
+            bw.write(String.format("%02d",LocalDateTime.now().getHour())+":"+String.format("%02d",LocalDateTime.now().getMinute())+":"+String.format("%02d",LocalDateTime.now().getSecond())+" | "+this.nom+" -> "+msg+"\n");
+            bw.close();
+        } catch (Exception e) {}
+    }
 }
 
 class TriageParNiveau implements Comparator<Carte>

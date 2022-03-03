@@ -33,7 +33,7 @@ public class Coffres {
     public Coffre getRandomCoffre(int proba)
     {
         if (proba == 60) return this.getCoffreParNom("Rodocoffre");
-        if (Math.random() * 100 > 640 + proba) return this.getRandomCoffre(proba+10);
+        if (Math.random() * 1000 > 800 + proba) return this.getRandomCoffre(proba+10);
         return alCoffres.get(proba/10);
     }
 
