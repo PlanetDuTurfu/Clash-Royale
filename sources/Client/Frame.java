@@ -37,7 +37,6 @@ public class Frame extends JFrame implements ActionListener {
         this.setTitle("Clash de baisé ! - Inventaire");
         this.pnlFTo = new PanelFondTo(msg, this.c);
         this.add(this.pnlFTo);
-        this.pnlFTo.setOpaque(false);
         this.actualiser();
     }
 
@@ -70,7 +69,6 @@ public class Frame extends JFrame implements ActionListener {
 
         this.setTitle("Clash de baisé ! - Coffres");
         this.pnlCof = new PanelCoffres(msg, this.c);
-        this.pnlCof.setOpaque(false);
         this.add(this.pnlCof);
         this.actualiser();
     }
@@ -109,12 +107,15 @@ class PanelRegister extends JPanel implements ActionListener {
     public PanelRegister(Connexion c)
     {
         this.c = c;
+
         this.txtPseudo = new JTextField(20);
         this.add(new JLabel("Pseudo : "));
         this.add(this.txtPseudo);
-        this.txtMdp = new JTextField(20);
+
         this.add(new JLabel("Mot de passe : "));
+        this.txtMdp = new JTextField(20);
         this.add(this.txtMdp);
+
         this.btnValider = new JButton("Se connecter/S'inscrire");
         this.add(this.btnValider);
         this.btnValider.addActionListener(this);
@@ -169,6 +170,8 @@ class PanelCoffres extends JPanel implements ActionListener {
         this.add(new PanelP2(msg, c), BorderLayout.CENTER);
 
         this.btnRet.addActionListener(this);
+
+        this.setOpaque(false);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -180,11 +183,11 @@ class PanelCoffres extends JPanel implements ActionListener {
 class PanelP2 extends JPanel {
     public PanelP2(String msg, Connexion c)
     {
-        this.setOpaque(false);
         this.setLayout(new GridLayout(0,5,5,5));
         if (msg.equals("")) return;
         msg = msg.substring(1);
         for (String s : msg.split("#")) this.add(new PanelCoffre(s,c));
+        this.setOpaque(false);
     }
 }
 
@@ -200,12 +203,11 @@ class PanelFondTo extends JPanel {
         this.add(new PanelBoutonTo(msg,c), BorderLayout.NORTH);
         String tmpmsg = msg.split("#")[0];
         tmpmsg += msg.substring(msg.split("#")[0].length() + 1 + msg.split("#")[1].length());
-        msg = tmpmsg;
 
-        this.pnlTo = new PanelTo(msg.substring(msg.split("#")[0].length()+1).split("#"), this.c);
+        this.pnlTo = new PanelTo(tmpmsg.substring(tmpmsg.split("#")[0].length()+1).split("#"), this.c);
         this.add(this.pnlTo);
         
-        this.pnlTo.setOpaque(false);
+        this.setOpaque(false);
     }
 }
 
@@ -223,6 +225,7 @@ class PanelTo extends JPanel {
             this.pnlCartes.add(new PanelCarte(s.split("¤"), this.c));
             this.add(this.pnlCartes.get(this.pnlCartes.size()-1));
         }
+        this.setOpaque(false);
     }
 }
 

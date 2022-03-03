@@ -47,7 +47,13 @@ public class Joueur implements Runnable {
     public void ajouterCarte(Carte[] tabCartes)
     {
         String affichage = "@carte#";
+        int nbC = 0, nbR = 0, nbE = 0, nbL =0;
         for (Carte c : tabCartes)
+        {
+            if (c.getRarete().equals("\033[90mCommune\033[0m")) nbC++;
+            if (c.getRarete().equals("\033[91mRare\033[0m")) nbR++;
+            if (c.getRarete().equals("\033[95mEpique\033[0m")) nbE++;
+            if (c.getRarete().equals("\033[36mLégendaire\033[0m")) nbL++;
             if ( !this.isCarteDansLinv(c.getNom()) )
             {
                 affichage += c.getNom() + "¤" + c.getRarete() + "¤true#";
@@ -58,7 +64,9 @@ public class Joueur implements Runnable {
                 affichage += c.getNom() + "¤" + c.getRarete() + "¤false#";
                 this.getCarteParNom(c.getNom()).addDoublon();
             }
-        
+        }
+
+        this.addLog("carte : " + nbC +"c " + nbR + "r " + nbE + "e " + nbL + "l");
         this.sortie.println(affichage);
     }
     public void setCartes(ArrayList<Carte> cartes)
@@ -129,7 +137,7 @@ public class Joueur implements Runnable {
 
     public BufferedReader getEntree(){ return this.entree; }
 	public PrintWriter    getSortie(){ return this.sortie; }
-    public void    setNom(String nom){ this.nom = nom    ; }
+    public void    setNom(String nom){ this.nom = nom; this.addLog("[+] " + this.nom); }
     public String            getNom(){ return this.nom   ; }
     public String            getMdp(){ return this.mdp   ; }
     public int                getOr(){ return this.or    ; }
@@ -186,7 +194,7 @@ public class Joueur implements Runnable {
 			}
 			catch(Exception e)
             {
-                System.out.println(this.nom + " a quitté le jeu.");
+                this.addLog("[-] " + this.nom);
                 this.serveur.deconnecter(this.thread, this);
                 try {this.entree.close();} catch (IOException e1) {}
                 this.sortie.close();

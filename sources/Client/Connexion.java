@@ -29,7 +29,6 @@ public class Connexion {
                         while(msg!=null)
                         {
                             msg = in.readLine();
-                            System.out.println(msg);
                             if (msg.length() > 0)
                             {
                                 if (msg.equals("wait#pseudo#mdp"))

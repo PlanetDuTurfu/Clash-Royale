@@ -111,11 +111,7 @@ public class Serveur
 		else if (message.substring(0,"co ".length()).equals("co "))
 		{
 			if (joueur.ouvrirCoffre(message.split("  ")[1]))
-			{
-				joueur.getSortie().println("Un coffre a été ouvert !");
 				this.lire("cos", joueur);
-			}
-			else joueur.getSortie().println("Vous n'avez plus de coffres !");
 		}
 		else if (message.equals("cos"))
 		{
