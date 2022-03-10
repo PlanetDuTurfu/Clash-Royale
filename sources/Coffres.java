@@ -53,11 +53,11 @@ public class Coffres {
     
         for (int i = 0; i < coffre.getCommune(); i++)
         {
-            if (Math.random() * 100 > 95)
+            if (Math.random() * 100 > 97)
             {
-                if (Math.random() * 100 > 70)
+                if (Math.random() * 100 > 92)
                 {
-                    if (Math.random() * 100 > 80)
+                    if (Math.random() * 100 > 85)
                     {
                         tmpCommune--;
                         tmpLegendaire++;

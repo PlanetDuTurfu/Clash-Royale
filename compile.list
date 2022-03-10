@@ -7,6 +7,7 @@
 ./sources/Coffre.java
 ./sources/Coffres.java
 ./sources/ClashRoyale.java
+./sources/JoueurTMP.java
 ./sources/Jeu.java
 ./sources/Reseau/Joueur.java
 ./sources/Reseau/Serveur.java
