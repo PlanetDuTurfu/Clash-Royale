@@ -107,6 +107,8 @@ public class Serveur
 			//Ajout du joueur dans la recherche de partie
 			this.joueurEnRecherche.add(joueur);
 			if ( this.joueurEnRecherche.size() >= 2 ) this.nouvellePartie();
+			for (Joueur jRech : this.joueurEnRecherche)
+				System.out.println(jRech.getNom());
 		}
 		else if (message.substring(0,"co ".length()).equals("co "))
 		{
@@ -152,9 +154,11 @@ public class Serveur
 	{
 		Joueur j1 = this.joueurEnRecherche.get(0);
 		Joueur j2 = this.joueurEnRecherche.get(1);
-		this.joueurEnRecherche.remove(this.joueurEnRecherche.get(0));
-		this.joueurEnRecherche.remove(this.joueurEnRecherche.get(0));
-		this.jeux.add( new Jeu(j1,j2) );
+		this.joueurEnRecherche.remove(j1);
+		this.joueurEnRecherche.remove(j2);
+		Jeu jeuTMP = new Jeu(j1,j2);
+		this.jeux.add( jeuTMP );
+		jeuTMP.start();
 	}
 
 	public void deconnecter(Thread tj, Joueur j)

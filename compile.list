@@ -15,3 +15,5 @@
 ./sources/Client/Connexion.java
 ./sources/Client/Frame.java
 ./sources/Client/PanelCarte.java
+./sources/Client/PanelCoffre.java
+./sources/Client/PanelOuverture.java

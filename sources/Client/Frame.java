@@ -133,16 +133,20 @@ class PanelAccueil extends JPanel implements ActionListener {
     private Connexion c;
     private JButton btnCartes;
     private JButton btnCoffres;
+    private JButton btnCombat;
 
     public PanelAccueil(Connexion c)
     {
         this.c = c;
 
         this.btnCartes  = new JButton("Cartes");
+        this.btnCombat  = new JButton("Combat");
         this.btnCoffres = new JButton("Coffres");
         this.btnCartes .addActionListener(this);
+        this.btnCombat .addActionListener(this);
         this.btnCoffres.addActionListener(this);
         this.add(this.btnCartes );
+        this.add(this.btnCombat );
         this.add(this.btnCoffres);
 
         this.setOpaque(false);
@@ -152,6 +156,7 @@ class PanelAccueil extends JPanel implements ActionListener {
     {
         if (e.getSource() == this.btnCoffres) this.c.ecrire("cos");
         if (e.getSource() == this.btnCartes ) this.c.ecrire("to 0");
+        if (e.getSource() == this.btnCombat ) this.c.ecrire("go");
     }
 }
 
