@@ -22,10 +22,8 @@ public class Jeu extends Thread
 
     public void run()
     {
-        System.out.println("run");
         try { Thread.sleep(3000); } catch(Exception e) {}
         this.initialiser();
-        this.envoyerInfos();
         this.plateau[2 ][10] = "TourJ1";
         this.joueur1.setTourPos(2,10);
         this.plateau[23][10] = "TourJ2";
@@ -270,6 +268,7 @@ public class Jeu extends Thread
             t.setPosY(t.getPosY()+y);
         }
         else System.out.println(t.getTID() + " Ne peut pas se déplacer");
+        this.envoyerInfos();
     }
 
     public void envoyerInfos()

@@ -33,7 +33,6 @@ public class Troupe extends Thread {
             this.cibler();
             if (this.peutFrapper()) this.frapper();
             else this.deplacer();
-            this.jeu.envoyerInfos();
         }
     }
 
@@ -61,20 +60,16 @@ public class Troupe extends Thread {
 
     private void frapper()
     {
-        System.out.println(this.id + " frapper");
         this.cible.seFaireFrapper(this.deg);
         try { sleep((int)(1000/this.vit_att)); } catch(Exception e) {}
     }
 
     private void seFaireFrapper(int deg)
     {
-        System.out.println(this.id + " se faire frapper " + this.pv);
         this.pv -= deg;
-        System.out.println(this.id + " se faire frapper " + this.pv);
         if (this.pv <= 0)
         {
             this.boolVie = false;
-            System.out.println(this.id + " mourir");
             this.jeu.mourir(this.id);
         }
     }
@@ -85,112 +80,33 @@ public class Troupe extends Thread {
         {
             int advPosX = this.adv.getPosX();
             int advPosY = this.adv.getPosY();
-
             int difX = advPosX - this.posX;
             int difY = advPosY - this.posY;
 
-            if (difX > 0)
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(1,1,this);
-                }
-                else if (difY == 0)
-                {
-                    this.jeu.deplacer(1,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(1,-1,this);
-                }
-            }
-            else if (difX == 0)
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(0,1,this);                        
-                }
-                else if (difY ==0)
-                {
-                    this.jeu.deplacer(0,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(0,-1,this);
-                }
-            }
-            else
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(-1,1,this);
-                }
-                else if (difY == 0)
-                {
-                    this.jeu.deplacer(-1,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(-1,-1,this);
-                }
-            }
+            if (difX > 0) this.direction(1, difY);
+            else if (difX == 0) this.direction(0, difY);
+            else this.direction(-1, difY);
         }
         else
         {
             int advPosX = this.cible.getPosX();
             int advPosY = this.cible.getPosY();
-
             int difX = advPosX - this.posX;
             int difY = advPosY - this.posY;
 
-            if (difX > 0)
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(1,1,this);
-                }
-                else if (difY == 0)
-                {
-                    this.jeu.deplacer(1,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(1,-1,this);
-                }
-            }
-            else if (difX == 0)
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(0,1,this);                        
-                }
-                else if (difY ==0)
-                {
-                    this.jeu.deplacer(0,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(0,-1,this);
-                }
-            }
-            else
-            {
-                if (difY > 0)
-                {
-                    this.jeu.deplacer(-1,1,this);
-                }
-                else if (difY == 0)
-                {
-                    this.jeu.deplacer(-1,0,this);
-                }
-                else
-                {
-                    this.jeu.deplacer(-1,-1,this);
-                }
-            }
+            if (difX > 0) this.direction(1, difY);
+            else if (difX == 0) this.direction(0, difY);
+            else this.direction(-1, difY);
         }
 
         try { sleep(1000); } catch(Exception e) {}
+    }
+
+    private void direction(int x, int difY)
+    {
+        if (difY > 0) this.jeu.deplacer(x, 1, this);
+        else if (difY > 0) this.jeu.deplacer(x, 0, this);
+        else this.jeu.deplacer(x, -1, this);
     }
 
     public int getPosX() { return this.posX; }
