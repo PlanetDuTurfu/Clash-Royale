@@ -79,12 +79,67 @@ public class Troupe extends Thread {
     {
         if (this.cible == null)
         {
-            
+            int advPosX = this.adv.getPosX();
+            int advPosY = this.adv.getPosY();
+
+            int difX = advPosX - this.posX;
+            int difY = advPosY - this.posY;
+
+            if (difX > 0)
+            {
+                if (difY > 0)
+                {
+                    this.jeu.deplacer(1,1,this);
+                }
+                else if (difY == 0)
+                {
+                    this.jeu.deplacer(1,0,this);
+                }
+                else
+                {
+                    this.jeu.deplacer(1,-1,this);
+                }
+            }
+            else if (difX == 0)
+            {
+                if (difY > 0)
+                {
+                    this.jeu.deplacer(0,1,this);                        
+                }
+                else if (difY ==0)
+                {
+                    this.jeu.deplacer(0,0,this);
+                }
+                else
+                {
+                    this.jeu.deplacer(0,-1,this);
+                }
+            }
+            else
+            {
+                if (difY > 0)
+                {
+                    this.jeu.deplacer(-1,1,this);
+                }
+                else if (difY == 0)
+                {
+                    this.jeu.deplacer(-1,0,this);
+                }
+                else
+                {
+                    this.jeu.deplacer(-1,-1,this);
+                }
+            }
         }
+
+        try { sleep(1000); } catch(Exception e) {}
     }
 
     public int getPosX() { return this.posX; }
     public int getPosY() { return this.posY; }
+
+    public void setPosX(int x) { this.posX = x; }
+    public void setPosY(int y) { this.posY = y; }
 
     public JoueurTMP getAdv() { return this.adv; }
 }

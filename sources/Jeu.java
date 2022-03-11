@@ -41,8 +41,8 @@ public class Jeu
 		if (this.plateau[lig][col].equals(""))
         {
             this.alTroupes.add(new Troupe(this,carte,idTroupe++,lig,col, new JoueurTMP(j)));
-            this.alTroupes.get(this.alTroupes.size()).start();
             this.plateau[lig][col] = "" + this.alTroupes.get(this.alTroupes.size()).getId();
+            this.alTroupes.get(this.alTroupes.size()).start();
             return true;
         }
         
@@ -66,16 +66,6 @@ public class Jeu
     {
         int posX = troupe.getPosX();
         int posY = troupe.getPosY();
-
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                int tmpX = posX-i, tmpY = posY;
-                Troupe t = this.scannerTableau(tmpX, tmpY, adv);
-                if (t != null) return t;
-            }
-        }
 
         int tmpX = posX-1, tmpY = posY;
         Troupe t = this.scannerTableau(tmpX, tmpY, adv);
@@ -257,6 +247,16 @@ public class Jeu
         catch (Exception e)
         {
             return false;
+        }
+    }
+
+    public void deplacer(int x, int y, Troupe t)
+    {
+        if (this.plateau[t.getPosX()+x][t.getPosY()+y].equals(""))
+        {
+            this.plateau[t.getPosX()+x][t.getPosY()+y] = "" + t.getId();
+            t.setPosX(t.getPosX()+x);
+            t.setPosY(t.getPosY()+y);
         }
     }
 }
