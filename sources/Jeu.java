@@ -22,7 +22,7 @@ public class Jeu extends Thread
 
     public void run()
     {
-        try { Thread.sleep(3000); } catch(Exception e) {}
+        try { Thread.sleep(3500); } catch(Exception e) {}
         this.initialiser();
 
         this.joueur1.setTour(new Tour(this,10000,200, 2,10,this.joueur2));
@@ -35,8 +35,8 @@ public class Jeu extends Thread
         
         this.envoyerInfos();
 
-        this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur1.getJoueur());
-        this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 1, 1, 1), this.joueur2.getJoueur());
+        this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur1);
+        this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 1, 1, 1), this.joueur2);
     }
 
     private void initialiser()
@@ -46,11 +46,11 @@ public class Jeu extends Thread
                 this.plateau[i][j] = "";
     }
 
-    public synchronized boolean placer (int lig, int col, Carte carte, Joueur j)
+    public synchronized boolean placer (int lig, int col, Carte carte, JoueurTMP j)
  	{
 		if (this.plateau[lig][col].equals(""))
         {
-            this.alTroupes.add(new Troupe(this,carte,this.idTroupe++,lig,col, this.getJoueurTMP(j)));
+            this.alTroupes.add(new Troupe(this,carte,this.idTroupe++,lig,col, j));
             this.plateau[lig][col] = "" + this.alTroupes.get(this.alTroupes.size()-1).getTID();
             this.alTroupes.get(this.alTroupes.size()-1).start();
             this.envoyerInfos();
@@ -414,35 +414,23 @@ public class Jeu extends Thread
         String affichage = "";
         affichage += "|";
         for (int i = 0; i < this.plateau[0].length; i++)
-        {
             affichage += "-";
-        }
         affichage += "|\n";
 
         for (int i = 0; i < this.plateau.length; i++)
         {
             affichage += "|";
             for(int j = 0; j < this.plateau[0].length; j++)
-            {
                 affichage += String.format("%1s",this.plateau[i][j]);
-            }
             affichage += "|\n";
         }
 
         affichage += "|";
         for (int i = 0; i < this.plateau[0].length; i++)
-        {
             affichage += "-";
-        }
         affichage += "|\n";
 
         this.joueur1.getJoueur().getSortie().println(affichage);
         this.joueur2.getJoueur().getSortie().println(affichage);
-    }
-
-    public JoueurTMP getJoueurTMP(Joueur j)
-    {
-        if (j.equals(joueur1.getJoueur())) return joueur1;
-        else return joueur2;
     }
 }
