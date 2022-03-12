@@ -73,15 +73,19 @@ public class Jeu extends Thread
         this.plateau[t.getPosX()][t.getPosY()] = "";
         this.envoyerInfos();
         try { sleep(100); } catch(Exception e) {}
-        
-        System.out.println(alTroupes.size());
-        for (Troupe tr : this.alTroupes)
+
+        try
         {
-            this.plateau[tr.getPosX()][tr.getPosY()] = "";
-            this.alTroupes.remove(tr);
-            this.envoyerInfos();
-            try { sleep(100); } catch(Exception e) {}
-        }
+            while (true)
+            {
+                Troupe tmp = this.alTroupes.get(0);
+                this.plateau[tmp.getPosX()][tmp.getPosY()] = "";
+                tmp.interrupt();
+                this.alTroupes.remove(tmp);
+                this.envoyerInfos();
+                try { sleep(200); } catch(Exception e) {}
+            }
+        } catch (Exception e) {}
 
         if (t.getAdv().equals(this.joueur1))
         {

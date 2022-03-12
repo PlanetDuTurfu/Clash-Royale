@@ -105,6 +105,8 @@ public class Troupe extends Thread {
         else this.jeu.deplacer(x, -1, this);
     }
 
+    public void interrupt() { this.boolVie = false; }
+
     public int getPosX() { return this.posX; }
     public int getPosY() { return this.posY; }
     public int getTID () { return this.id  ; }
