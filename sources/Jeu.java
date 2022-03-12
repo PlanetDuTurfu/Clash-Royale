@@ -24,14 +24,19 @@ public class Jeu extends Thread
     {
         try { Thread.sleep(3000); } catch(Exception e) {}
         this.initialiser();
-        this.plateau[2 ][10] = "TourJ1";
-        this.joueur1.setTourPos(2,10);
-        this.plateau[23][10] = "TourJ2";
-        this.joueur2.setTourPos(23,10);
+
+        this.joueur1.setTour(new Tour(this,10000,200, 2,10,this.joueur2));
+        this.joueur1.getTour().start();
+        this.plateau[2 ][10] = "R";
+        
+        this.joueur2.setTour(new Tour(this,10000,200,23,10,this.joueur1));
+        this.joueur2.getTour().start();
+        this.plateau[23][10] = "B";
+        
         this.envoyerInfos();
 
         this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur1.getJoueur());
-        this.placer(3 , 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur2.getJoueur());
+        this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 1, 1, 1), this.joueur2.getJoueur());
     }
 
     private void initialiser()
@@ -55,173 +60,302 @@ public class Jeu extends Thread
         return false;
  	}
 
-    public synchronized void mourir(int id)
+    public synchronized void mourir(Troupe t)
     {
-        for (Troupe t : alTroupes)
-        {
-            System.out.println(t.getTID() + " " + id);
-            if (t.getTID() == id)
-            {
-                this.plateau[t.getPosX()][t.getPosY()] = "";
-                this.alTroupes.remove(t);
-                break;
-            }
-        }
+        this.plateau[t.getPosX()][t.getPosY()] = "";
+        this.alTroupes.remove(t);
+
         this.envoyerInfos();
     }
 
-    public Troupe trouverEnnemiProche(Troupe troupe,JoueurTMP adv)
+    public synchronized void exploser(Tour t)
     {
-        int posX = troupe.getPosX();
-        int posY = troupe.getPosY();
+        this.plateau[t.getPosX()][t.getPosY()] = "";
+        this.envoyerInfos();
+        try { sleep(100); } catch(Exception e) {}
+        
+        System.out.println(alTroupes.size());
+        for (Troupe tr : this.alTroupes)
+        {
+            this.plateau[tr.getPosX()][tr.getPosY()] = "";
+            this.alTroupes.remove(tr);
+            this.envoyerInfos();
+            try { sleep(100); } catch(Exception e) {}
+        }
 
+        if (t.getAdv().equals(this.joueur1))
+        {
+            this.joueur2.getJoueur().getSortie().println("Défaite");
+            this.joueur1.getJoueur().getSortie().println("Victoire");
+        }
+        else
+        {
+            this.joueur1.getJoueur().getSortie().println("Défaite");
+            this.joueur2.getJoueur().getSortie().println("Victoire");
+        }
+    }
+
+    public Troupe trouverEnnemiProche(int posX, int posY,JoueurTMP adv)
+    {
         int tmpX = posX-1, tmpY = posY;
-        Troupe t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        Troupe t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
         
         tmpX = posX+1; tmpY = posY;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
         
         tmpX = posX+1; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+1; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+1; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+2; tmpY = posY;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-2; tmpY = posY;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY-2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+1; tmpY = posY-2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY-2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+1; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-2; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-2; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+2; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+2; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-2; tmpY = posY-2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-2; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+2; tmpY = posY+2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+2; tmpY = posY-2;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+3; tmpY = posY;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-3; tmpY = posY;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY+3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX; tmpY = posY-3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY-3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
         
         tmpX = posX+1; tmpY = posY-3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+1; tmpY = posY+3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-1; tmpY = posY+3;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+3; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX+3; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-3; tmpY = posY+1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         tmpX = posX-3; tmpY = posY-1;
-        t = this.scannerTableau(tmpX, tmpY, adv);
-        if (t != null) return t;
+        if (tmpX >= 0 && tmpY >= 0 && tmpX <= 24 && tmpY <= 24)
+        {
+            t = this.scannerTableau(tmpX, tmpY, adv);
+            if (t != null) return t;
+        }
 
         return null;
     }

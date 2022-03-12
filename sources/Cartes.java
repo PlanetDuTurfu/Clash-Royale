@@ -26,7 +26,7 @@ public class Cartes {
         for (String s : tab)
         {
             try {
-                Scanner sc = new Scanner(new FileInputStream("./data/Cartes"+s+".data"));
+                Scanner sc = new Scanner(new FileInputStream("./data/cartes/Cartes"+s+".data"));
                 while (sc.hasNextLine())
                 {
                     String[] l = sc.nextLine().split("\t");

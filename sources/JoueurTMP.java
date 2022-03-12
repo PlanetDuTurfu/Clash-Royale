@@ -3,8 +3,7 @@ package sources;
 import sources.Reseau.Joueur;
 
 public class JoueurTMP {
-    private int posX;
-    private int posY;
+    private Tour tour;
     private String nom;
     private Joueur j;
 
@@ -14,14 +13,9 @@ public class JoueurTMP {
         this.j = j;
     }
 
-    public void setTourPos(int x, int y)
-    {
-        this.posX = x;
-        this.posY = y;
-    }
+    public void setTour(Tour tour) { this.tour = tour; }
 
-    public int getPosX() { return this.posX; }
-    public int getPosY() { return this.posY; }
     public Joueur getJoueur() { return this.j; }
-    public String getNom() { return this.nom; }
+    public String getNom () { return this.nom; }
+    public Tour  getTour (){ return this.tour; }
 }

@@ -30,15 +30,10 @@ public class Troupe extends Thread {
         try { sleep(1000); } catch(Exception e) {}
         while(this.boolVie)
         {
-            this.cibler();
+            this.cible = this.jeu.trouverEnnemiProche(this.posX,this.posY,this.adv);
             if (this.peutFrapper()) this.frapper();
             else this.deplacer();
         }
-    }
-
-    private void cibler()
-    {
-        this.cible = this.jeu.trouverEnnemiProche(this,this.adv);
     }
 
     private boolean peutFrapper()
@@ -51,8 +46,8 @@ public class Troupe extends Thread {
         }
         else
         {
-            int difX = this.adv.getPosX() - this.posX;
-            int difY = this.adv.getPosY() - this.posY;
+            int difX = this.adv.getTour().getPosX() - this.posX;
+            int difY = this.adv.getTour().getPosY() - this.posY;
             if (difX > -2 && difX < 2 && difY > -2 && difY < 2) return true;
         }
         return false;
@@ -60,17 +55,18 @@ public class Troupe extends Thread {
 
     private void frapper()
     {
-        this.cible.seFaireFrapper(this.deg);
+        if (this.cible != null) this.cible.seFaireFrapper(this.deg);
+        else this.adv.getTour().seFaireFrapper(this.deg);
         try { sleep((int)(1000/this.vit_att)); } catch(Exception e) {}
     }
 
-    private void seFaireFrapper(int deg)
+    public void seFaireFrapper(int deg)
     {
         this.pv -= deg;
         if (this.pv <= 0)
         {
             this.boolVie = false;
-            this.jeu.mourir(this.id);
+            this.jeu.mourir(this);
         }
     }
 
@@ -78,8 +74,8 @@ public class Troupe extends Thread {
     {
         if (this.cible == null)
         {
-            int advPosX = this.adv.getPosX();
-            int advPosY = this.adv.getPosY();
+            int advPosX = this.adv.getTour().getPosX();
+            int advPosY = this.adv.getTour().getPosY();
             int difX = advPosX - this.posX;
             int difY = advPosY - this.posY;
 
