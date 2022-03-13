@@ -37,6 +37,13 @@ public class Jeu extends Thread
 
         this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur1);
         this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 1, 1, 1), this.joueur2);
+
+        synchronized (this)
+        {
+            try { this.wait(); } catch (InterruptedException e) {}
+        }
+
+        System.out.println("fini");
     }
 
     private void initialiser()
@@ -87,15 +94,28 @@ public class Jeu extends Thread
             }
         } catch (Exception e) {}
 
+        t.getAdv().getTour().interrupt();
+
         if (t.getAdv().equals(this.joueur1))
         {
             this.joueur2.getJoueur().getSortie().println("Défaite");
+            this.joueur2.getJoueur().ajouterOr(10);
             this.joueur1.getJoueur().getSortie().println("Victoire");
+            this.joueur1.getJoueur().ajouterOr(20);
+            this.joueur1.getJoueur().ajouterRandomCoffre();
         }
         else
         {
             this.joueur1.getJoueur().getSortie().println("Défaite");
+            this.joueur1.getJoueur().ajouterOr(10);
             this.joueur2.getJoueur().getSortie().println("Victoire");
+            this.joueur2.getJoueur().ajouterOr(20);
+            this.joueur2.getJoueur().ajouterRandomCoffre();
+        }
+
+        synchronized (this)
+        {
+            this.notify();
         }
     }
 

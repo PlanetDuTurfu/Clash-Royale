@@ -25,6 +25,7 @@ public class Tour extends Thread {
         this.boolVie = true;
         while (this.boolVie)
         {
+            System.out.println("tour run");
             this.cible = this.jeu.trouverEnnemiProche(this.posX,this.posY,this.adv);
             if (this.cible != null) this.frapper();
             try { Thread.sleep(300); } catch(Exception e) {}
@@ -47,6 +48,7 @@ public class Tour extends Thread {
         }
     }
 
+    public void interrupt() { this.boolVie = false; }
     public int getPosX() { return this.posX; }
     public int getPosY() { return this.posY; }
     public JoueurTMP getAdv() { return this.adv; }

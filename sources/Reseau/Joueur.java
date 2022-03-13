@@ -110,6 +110,11 @@ public class Joueur implements Runnable {
         this.alCoffre.add(coffre);
         this.addLog("added coffre " + this.alCoffre.get(this.alCoffre.size()-1).getNom());
     }
+    public void ajouterRandomCoffre()
+    {
+        Coffre c = this.cr.getRandomCoffre();
+        this.ajouterCoffre(c);
+    }
     public boolean ouvrirCoffre(String nom)
     {
         if (this.alCoffre.size() == 0) return false;
