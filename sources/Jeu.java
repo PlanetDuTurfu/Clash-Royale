@@ -32,11 +32,11 @@ public class Jeu extends Thread
         this.joueur2.setTour(new Tour(this,10000,200,23,10,this.joueur1));
         this.joueur2.getTour().start();
         this.plateau[23][10] = "B";
-        
+
         this.envoyerInfos();
 
-        this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 1, 1, 1), this.joueur1);
-        this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 1, 1, 1), this.joueur2);
+        this.placer(20, 3, new Carte("tmp", "Commune", 1, 1, 1.0, 5.0, 1, 1, 1), this.joueur1);
+        this.placer(3 , 3, new Carte("tmp", "Commune", 100000, 100000, 1.0, 2.0, 1, 1, 1), this.joueur2);
 
         synchronized (this)
         {
@@ -79,7 +79,7 @@ public class Jeu extends Thread
     {
         this.plateau[t.getPosX()][t.getPosY()] = "";
         this.envoyerInfos();
-        try { sleep(100); } catch(Exception e) {}
+        try { sleep(500); } catch(Exception e) {}
 
         try
         {

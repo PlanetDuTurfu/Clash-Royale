@@ -11,6 +11,7 @@ public class Troupe extends Thread {
     private int pv;
     private int deg;
     private double vit_att;
+    private double vit_dep;
 
     public Troupe(Jeu jeu, Carte c, int id, int posX, int posY, JoueurTMP adv)
     {
@@ -22,6 +23,7 @@ public class Troupe extends Thread {
         this.pv = c.getPV();
         this.deg = c.getDeg();
         this.vit_att = c.getVitAtt();
+        this.vit_dep = c.getVitDep();
     }
 
     public void run()
@@ -95,13 +97,13 @@ public class Troupe extends Thread {
             else this.direction(-1, difY);
         }
 
-        try { sleep(1000); } catch(Exception e) {}
+        try { sleep((int)(1000/this.vit_dep)); } catch(Exception e) {}
     }
 
     private void direction(int x, int difY)
     {
         if (difY > 0) this.jeu.deplacer(x, 1, this);
-        else if (difY > 0) this.jeu.deplacer(x, 0, this);
+        else if (difY == 0) this.jeu.deplacer(x, 0, this);
         else this.jeu.deplacer(x, -1, this);
     }
 

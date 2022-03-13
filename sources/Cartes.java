@@ -30,10 +30,10 @@ public class Cartes {
                 while (sc.hasNextLine())
                 {
                     String[] l = sc.nextLine().split("\t");
-                    if (s.equals("Commune"   )) alCarteCommune   .add(new Carte(l[0], "\033[90m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1,0,Integer.parseInt(l[4])));
-                    if (s.equals("Rare"      )) alCarteRare      .add(new Carte(l[0], "\033[91m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1,0,Integer.parseInt(l[4])));
-                    if (s.equals("Epique"    )) alCarteEpique    .add(new Carte(l[0], "\033[95m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1,0,Integer.parseInt(l[4])));
-                    if (s.equals("Légendaire")) alCarteLegendaire.add(new Carte(l[0], "\033[36m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]),1,0,Integer.parseInt(l[4])));
+                    if (s.equals("Commune"   )) alCarteCommune   .add(new Carte(l[0], "\033[90m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]), Double.parseDouble(l[4]),1,0,Integer.parseInt(l[5])));
+                    if (s.equals("Rare"      )) alCarteRare      .add(new Carte(l[0], "\033[91m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]), Double.parseDouble(l[4]),1,0,Integer.parseInt(l[5])));
+                    if (s.equals("Epique"    )) alCarteEpique    .add(new Carte(l[0], "\033[95m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]), Double.parseDouble(l[4]),1,0,Integer.parseInt(l[5])));
+                    if (s.equals("Légendaire")) alCarteLegendaire.add(new Carte(l[0], "\033[36m"+s+"\033[0m", Integer.parseInt(l[1]), Integer.parseInt(l[2]), Double.parseDouble(l[3]), Double.parseDouble(l[4]),1,0,Integer.parseInt(l[5])));
                 }
                 sc.close();
             } catch(Exception e) {}

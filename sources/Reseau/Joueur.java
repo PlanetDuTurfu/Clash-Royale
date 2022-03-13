@@ -57,7 +57,7 @@ public class Joueur implements Runnable {
             if ( !this.isCarteDansLinv(c.getNom()) )
             {
                 affichage += c.getNom() + "¤" + c.getRarete() + "¤true#";
-                this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), 1, 1, c.getPrix()));
+                this.alCartes.add(new Carte(c.getNom(), c.getRarete(), c.getPV(), c.getDeg(), c.getVitAtt(), c.getVitDep(), 1, 1, c.getPrix()));
             }
             else
             {

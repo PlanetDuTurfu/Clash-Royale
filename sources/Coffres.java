@@ -45,12 +45,6 @@ public class Coffres {
         int tmpLegendaire = coffre.getLegendaire();
         Carte[] tabCartes = new Carte[tmpCommune + tmpRare + tmpEpique + tmpLegendaire];
 
-        System.out.println("Cartes avant transformation : \n"+
-        "Communes : "+tmpCommune+"\n"+
-        "Rares : "+tmpRare+"\n"+
-        "Epiques : "+tmpEpique+"\n"+
-        "Légendaires : "+tmpLegendaire+"\n");
-    
         for (int i = 0; i < coffre.getCommune(); i++)
         {
             if (Math.random() * 100 > 97)
@@ -75,12 +69,6 @@ public class Coffres {
                 }
             }
         }
-
-        System.out.println("Cartes après transformation : \n"+
-        "Communes : "+tmpCommune+"\n"+
-        "Rares : "+tmpRare+"\n"+
-        "Epiques : "+tmpEpique+"\n"+
-        "Légendaires : "+tmpLegendaire+"\n\n\n");
 
         int nbCarteTiree = 0;
         int nbCarte = 0;

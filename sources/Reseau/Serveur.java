@@ -104,11 +104,7 @@ public class Serveur
 		}
 		else if (message.equals("go"))
 		{
-			//Ajout du joueur dans la recherche de partie
-			this.joueurEnRecherche.add(joueur);
-			if ( this.joueurEnRecherche.size() >= 2 ) this.nouvellePartie();
-			for (Joueur jRech : this.joueurEnRecherche)
-				System.out.println(jRech.getNom());
+			this.addJoueurRecherche(joueur);
 		}
 		else if (message.substring(0,"co ".length()).equals("co "))
 		{
@@ -150,6 +146,12 @@ public class Serveur
 		this.sauverJoueur(joueur);
 	}
 
+	private synchronized void addJoueurRecherche(Joueur joueur)
+	{
+		this.joueurEnRecherche.add(joueur);
+		if ( this.joueurEnRecherche.size() >= 2 ) this.nouvellePartie();
+	}
+
 	private void nouvellePartie()
 	{
 		Joueur j1 = this.joueurEnRecherche.get(0);
@@ -189,7 +191,7 @@ public class Serveur
 						if (ligne[0].charAt(0) == 'A')
 						{
 							Carte tmp2 = cr.getCarteParNom(ligne[1]);
-							tmp2 = new Carte(tmp2.getNom(), tmp2.getRarete(), tmp2.getPV(), tmp2.getDeg(), tmp2.getVitAtt(), 0, 0, tmp2.getPrix());
+							tmp2 = new Carte(tmp2.getNom(), tmp2.getRarete(), tmp2.getPV(), tmp2.getDeg(), tmp2.getVitAtt(), tmp2.getVitDep(), 0, 0, tmp2.getPrix());
 							for (int i = 0; i < Integer.parseInt(ligne[2]); i++) tmp2.addDoublon();
 							for (int i = 0; i < Integer.parseInt(ligne[3]); i++) tmp2.ameliorer();
 							cartes.add(tmp2);

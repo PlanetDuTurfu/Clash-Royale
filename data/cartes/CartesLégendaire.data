@@ -1,4 +1,4 @@
-PLP	500	1000	0.75	2
-Steph Maing	2600	400	1.2	6
-RodoBoss	3000	250	1	4
-Kevin	2100	330	0.75	3
+PLP	500	1000	0.75	0.5	2
+Steph Maing	2600	400	1.2	1	6
+RodoBoss	3000	250	1	0.75	4
+Kevin	2100	330	0.75	1.25	3

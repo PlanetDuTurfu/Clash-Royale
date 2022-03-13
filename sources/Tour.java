@@ -25,17 +25,15 @@ public class Tour extends Thread {
         this.boolVie = true;
         while (this.boolVie)
         {
-            System.out.println("tour run");
             this.cible = this.jeu.trouverEnnemiProche(this.posX,this.posY,this.adv);
             if (this.cible != null) this.frapper();
-            try { Thread.sleep(300); } catch(Exception e) {}
+            try { Thread.sleep(500); } catch(Exception e) {}
         }
     }
 
     private void frapper()
     {
         this.cible.seFaireFrapper(this.deg);
-        try { sleep(200); } catch(Exception e) {}
     }
 
     public void seFaireFrapper(int deg)
