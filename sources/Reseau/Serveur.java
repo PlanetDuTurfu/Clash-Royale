@@ -104,7 +104,8 @@ public class Serveur
 		}
 		else if (message.equals("go"))
 		{
-			this.addJoueurRecherche(joueur);
+			if (!this.joueurEnRecherche.contains(joueur)) this.addJoueurRecherche(joueur);
+			else System.out.println("déjà en recherche");
 		}
 		else if (message.substring(0,"co ".length()).equals("co "))
 		{
@@ -117,7 +118,7 @@ public class Serveur
 			for (Coffre c : joueur.getCoffres()) affichage += c.getNom() + "#";
 			joueur.getSortie().println(affichage.substring(0,affichage.length() - 1));
 		}
-		else if (message.substring(0,2).equals("ameliorer".substring(0,2)))
+		else if (message.substring(0,2).equals("am"))
 		{
 			if (joueur.ameliorer(joueur.getCarteParNom(message.split("  ")[1])))
 				joueur.getSortie().println("Carte améliorée");
@@ -157,9 +158,16 @@ public class Serveur
 		Joueur j2 = this.joueurEnRecherche.get(1);
 		this.joueurEnRecherche.remove(j1);
 		this.joueurEnRecherche.remove(j2);
-		Jeu jeuTMP = new Jeu(j1,j2);
+		Jeu jeuTMP = new Jeu(j1,j2,this);
 		this.jeux.add( jeuTMP );
 		jeuTMP.start();
+	}
+
+	public void supprimerJeu(Jeu jeu)
+	{
+		for (Jeu j : jeux)
+		System.out.println(j.getName());
+		this.jeux.remove(jeu);
 	}
 
 	public void deconnecter(Thread tj, Joueur j)

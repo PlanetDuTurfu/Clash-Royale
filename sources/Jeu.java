@@ -2,17 +2,20 @@ package sources;
 
 import java.util.ArrayList;
 import sources.Reseau.Joueur;
+import sources.Reseau.Serveur;
 
 public class Jeu extends Thread
 {
+    private Serveur serveur;
     private String[][] plateau;
     private ArrayList<Troupe> alTroupes;
 	private JoueurTMP joueur1;
     private JoueurTMP joueur2;
     private int idTroupe;
 
-    public Jeu(Joueur j1, Joueur j2)
+    public Jeu(Joueur j1, Joueur j2, Serveur serv)
     {
+        this.serveur = serv;
         this.plateau = new String[25][19];
         this.alTroupes = new ArrayList<Troupe>();
         this.joueur1 = new JoueurTMP(j1);
@@ -43,7 +46,7 @@ public class Jeu extends Thread
             try { this.wait(); } catch (InterruptedException e) {}
         }
 
-        System.out.println("fini");
+        this.serveur.supprimerJeu(this);
     }
 
     private void initialiser()
