@@ -113,7 +113,6 @@ public class Serveur
 		}
 		else if (message.equals("cos"))
 		{
-			joueur.ajouterCoffre(this.cr.getRandomCoffre());
 			String affichage = "@co#";
 			for (Coffre c : joueur.getCoffres()) affichage += c.getNom() + "#";
 			joueur.getSortie().println(affichage.substring(0,affichage.length() - 1));
@@ -214,6 +213,8 @@ public class Serveur
 		try {mdp = entree.readLine();}catch(Exception e){}
 		j = new Joueur(this, socket, cr, t, mdp, entree, sortie);
 		j.setNom(pseudo);
+		
+		j.ajouterCoffre(this.cr.getCoffreParNom("Coffre stylax"));
 		return j;
 	}
 
